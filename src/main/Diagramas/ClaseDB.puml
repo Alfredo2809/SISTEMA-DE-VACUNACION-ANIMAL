@@ -1,0 +1,146 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Enumeraciones
+enum RolUsuario {
+  ADMINISTRADOR
+  BRIGADISTA
+  PERSONAL_AUTORIZADO
+}
+
+enum EstadoUsuario {
+  ACTIVO
+  INACTIVO
+}
+
+enum Especie {
+  PERRO
+  GATO
+}
+
+enum EstadoMascota {
+  ACTIVO
+  FALLECIDO
+  DESAPARECIDO
+  OTRO
+}
+
+' Entidades adaptadas a Convención Java (UpperCamelCase en Clases y lowerCamelCase en Atributos)
+class Departamento <<entity>> {
+  + idDepartamento: Long
+  + nombre: String
+}
+
+class Municipio <<entity>> {
+  + idMunicipio: Long
+  + idDepartamento: Long
+  + nombre: String
+}
+
+class Canton <<entity>> {
+  + idCanton: Long
+  + idMunicipio: Long
+  + nombre: String
+}
+
+class Colonia <<entity>> {
+  + idColonia: Long
+  + idCanton: Long
+  + nombre: String
+}
+
+class Vivienda <<entity>> {
+  + idVivienda: Long
+  + idColonia: Long
+  + direccion: String
+  + referenciaUbicacion: String
+}
+
+class Responsable <<entity>> {
+  + idResponsable: Long
+  + nombreCompleto: String
+  + telefono: String
+  + documentoIdentidad: String
+}
+
+class ViviendaResponsable <<entity>> {
+  + idVivienda: Long
+  + idResponsable: Long
+}
+
+class Mascota <<entity>> {
+  + idMascota: Long
+  + idResponsable: Long
+  + idVivienda: Long
+  + nombre: String
+  + especie: Especie
+  + fechaNacimiento: LocalDate
+  + edadAproximadaMeses: Integer
+  + estado: EstadoMascota
+}
+
+class Usuario <<entity>> {
+  + idUsuario: Long
+  + nombreCompleto: String
+  + correo: String
+  + contrasena: String
+  + rol: RolUsuario
+  + estado: EstadoUsuario
+}
+
+class CampanaVacunacion <<entity>> {
+  + idCampana: Long
+  + nombre: String
+  + fechaInicio: LocalDate
+  + fechaFin: LocalDate
+  + estado: String
+}
+
+class CoberturaTerritorial <<entity>> {
+  + idCobertura: Long
+  + idCampana: Long
+  + idColonia: Long
+}
+
+class RegistroVacunacion <<entity>> {
+  + idRegistro: Long
+  + idMascota: Long
+  + idCampana: Long
+  + idUsuario: Long
+  + fechaAplicacion: LocalDateTime
+  + observaciones: String
+}
+
+class RegistroNoVacunado <<entity>> {
+  + idRegistroNoVacunado: Long
+  + idMascota: Long
+  + idCampana: Long
+  + idUsuario: Long
+  + motivo: String
+  + fechaRegistro: LocalDateTime
+}
+
+' Relaciones
+Departamento "1" -- "0..*" Municipio : idDepartamento
+Municipio "1" -- "0..*" Canton : idMunicipio
+Canton "1" -- "0..*" Colonia : idCanton
+Colonia "1" -- "0..*" Vivienda : idColonia
+Colonia "1" -- "0..*" CoberturaTerritorial : idColonia
+
+Responsable "1" -- "0..*" ViviendaResponsable : idResponsable
+Vivienda "1" -- "0..*" ViviendaResponsable : idVivienda
+
+Responsable "1" -- "0..*" Mascota : idResponsable
+Vivienda "1" -- "0..*" Mascota : idVivienda
+
+CampanaVacunacion "1" -- "0..*" CoberturaTerritorial : idCampana
+CampanaVacunacion "1" -- "0..*" RegistroVacunacion : idCampana
+CampanaVacunacion "1" -- "0..*" RegistroNoVacunado : idCampana
+
+Mascota "1" -- "0..*" RegistroVacunacion : idMascota
+Mascota "1" -- "0..*" RegistroNoVacunado : idMascota
+
+Usuario "1" -- "0..*" RegistroVacunacion : idUsuario
+Usuario "1" -- "0..*" RegistroNoVacunado : idUsuario
+
+@enduml

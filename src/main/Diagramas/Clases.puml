@@ -1,0 +1,131 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' Enums (Valores en UPPER_SNAKE_CASE)
+enum RolUsuario {
+  ADMINISTRADOR
+  BRIGADISTA
+  PERSONAL_AUTORIZADO
+}
+
+enum EstadoUsuario {
+  ACTIVO
+  INACTIVO
+}
+
+enum Especie {
+  PERRO
+  GATO
+}
+
+enum EstadoMascota {
+  ACTIVO
+  FALLECIDO
+  DESAPARECIDO
+  OTRO
+}
+
+' Clases Principales (UpperCamelCase)
+class CampanaVacunacion {
+  - idCampana: String
+  - nombre: String
+  - fechaInicio: Date
+  - fechaFin: Date
+  - estado: String
+}
+
+class CoberturaTerritorial {
+  - idCobertura: String
+}
+
+class Departamento {
+  - idDepartamento: String
+  - nombre: String
+}
+
+class Municipio {
+  - idMunicipio: String
+  - nombre: String
+}
+
+class Canton {
+  - idCanton: String
+  - nombre: String
+}
+
+class Colonia {
+  - idColonia: String
+  - nombre: String
+}
+
+class Vivienda {
+  - idVivienda: String
+  - direccion: String
+  - referenciaUbicacion: String
+  + actualizarDireccion(nuevaDireccion: String): void
+}
+
+class Responsable {
+  - idResponsable: String
+  - nombreCompleto: String
+  - telefono: String
+  - documentoIdentidad: String
+  + actualizarTelefono(nuevoTelefono: String): void
+}
+
+class Mascota {
+  - idMascota: String
+  - nombre: String
+  - especie: Especie
+  - fechaNacimiento: Date
+  - edadAproximadaMeses: Integer
+  - estado: EstadoMascota
+  + actualizarInformacion(nombre: String, especie: Especie, edad: Integer): void
+  + cambiarEstado(nuevoEstado: EstadoMascota): void
+}
+
+class Usuario {
+  - idUsuario: String
+  - nombreCompleto: String
+  - correo: String
+  - contrasena: String
+  - rol: RolUsuario
+  - estado: EstadoUsuario
+  + iniciarSesion(correo: String, contrasena: String): Boolean
+  + cambiarRol(nuevoRol: RolUsuario): void
+  + cambiarEstado(nuevoEstado: EstadoUsuario): void
+}
+
+class RegistroVacunacion {
+  - idRegistro: String
+  - fechaAplicacion: Date
+  - observaciones: String
+}
+
+class RegistroNoVacunado {
+  - idRegistroNoVacunado: String
+  - motivo: String
+  - fechaRegistro: Date
+}
+
+' Relaciones y Jerarquías
+Departamento "1" -- "1..*" Municipio : contiene
+Municipio "1" -- "1..*" Canton : contiene
+Canton "1" -- "1..*" Colonia : contiene
+Colonia "1" -- "0..*" Vivienda : pertenece a
+
+Vivienda "1" -- "0..*" Mascota : habita en
+Responsable "1" -- "0..*" Mascota : es responsable de
+Vivienda "0..*" -- "1..*" Responsable : aloja / asociado con
+
+CampanaVacunacion "1" -- "1..*" CoberturaTerritorial : define
+CoberturaTerritorial "0..*" -- "1" Colonia : abarca
+
+Usuario "1" -- "0..*" RegistroVacunacion : ejecuta / registra
+Usuario "1" -- "0..*" RegistroNoVacunado : registra omitida
+CampanaVacunacion "1" -- "0..*" RegistroVacunacion : registra
+CampanaVacunacion "1" -- "0..*" RegistroNoVacunado : reporta en
+Mascota "1" -- "0..*" RegistroVacunacion : recibe
+Mascota "1" -- "0..*" RegistroNoVacunado : registra
+
+@enduml
