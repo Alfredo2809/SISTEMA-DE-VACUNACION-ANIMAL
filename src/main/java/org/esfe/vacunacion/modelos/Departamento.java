@@ -15,9 +15,9 @@ public class Departamento {
     @Column(nullable = false, length = 100)
     private String nombre;
 
-    // TODO: Descomentar cuando la entidad Municipio exista en developer
-    // @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true)
-    // private List<Municipio> municipios = new ArrayList<>();
+
+     @OneToMany(mappedBy = "departamento", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Municipio> municipios = new ArrayList<>();
 
     // Constructor predeterminado (JPA)
     public Departamento() {
@@ -46,7 +46,7 @@ public class Departamento {
         this.nombre = nombre;
     }
 
-    /* TODO: Descomentar cuando la entidad Municipio exista
+
     public List<Municipio> getMunicipios() {
         return municipios;
     }
@@ -54,5 +54,5 @@ public class Departamento {
     public void setMunicipios(List<Municipio> municipios) {
         this.municipios = municipios;
     }
-    */
+
 }
