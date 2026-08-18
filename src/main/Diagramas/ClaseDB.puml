@@ -25,7 +25,13 @@ enum EstadoMascota {
   OTRO
 }
 
-' Entidades adaptadas a Convención Java (UpperCamelCase en Clases y lowerCamelCase en Atributos)
+' Nuevo enumerador para manejar si fue vacunada o no en el mismo registro
+enum EstadoVacunacion {
+  VACUNADA
+  NO_VACUNADA
+}
+
+' Entidades adaptadas a Convención Java
 class Departamento <<entity>> {
   + idDepartamento: Long
   + nombre: String
@@ -102,45 +108,39 @@ class CoberturaTerritorial <<entity>> {
   + idColonia: Long
 }
 
+' Entidad unificada para los registros de vacunación (Vacunados y No Vacunados)
 class RegistroVacunacion <<entity>> {
   + idRegistro: Long
   + idMascota: Long
   + idCampana: Long
   + idUsuario: Long
-  + fechaAplicacion: LocalDateTime
+  + estado: EstadoVacunacion
+  + fechaRegistro: LocalDateTime
+  + motivoNoVacunacion: String
   + observaciones: String
 }
 
-class RegistroNoVacunado <<entity>> {
-  + idRegistroNoVacunado: Long
-  + idMascota: Long
-  + idCampana: Long
-  + idUsuario: Long
-  + motivo: String
-  + fechaRegistro: LocalDateTime
-}
-
-' Relaciones
+' Relaciones Territoriales
 Departamento "1" -- "0..*" Municipio : idDepartamento
 Municipio "1" -- "0..*" Canton : idMunicipio
 Canton "1" -- "0..*" Colonia : idCanton
 Colonia "1" -- "0..*" Vivienda : idColonia
 Colonia "1" -- "0..*" CoberturaTerritorial : idColonia
 
+' Relaciones Vivienda y Responsable
 Responsable "1" -- "0..*" ViviendaResponsable : idResponsable
 Vivienda "1" -- "0..*" ViviendaResponsable : idVivienda
 
+' Relaciones Mascotas
 Responsable "1" -- "0..*" Mascota : idResponsable
 Vivienda "1" -- "0..*" Mascota : idVivienda
 
+' Relaciones Campaña
 CampanaVacunacion "1" -- "0..*" CoberturaTerritorial : idCampana
 CampanaVacunacion "1" -- "0..*" RegistroVacunacion : idCampana
-CampanaVacunacion "1" -- "0..*" RegistroNoVacunado : idCampana
 
+' Relaciones Registros
 Mascota "1" -- "0..*" RegistroVacunacion : idMascota
-Mascota "1" -- "0..*" RegistroNoVacunado : idMascota
-
 Usuario "1" -- "0..*" RegistroVacunacion : idUsuario
-Usuario "1" -- "0..*" RegistroNoVacunado : idUsuario
 
 @enduml
