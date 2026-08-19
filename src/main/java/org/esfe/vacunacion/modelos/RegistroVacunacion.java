@@ -1,5 +1,6 @@
 package org.esfe.vacunacion.modelos;
 
+
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -83,4 +84,5 @@ public class RegistroVacunacion {
     public void setObservaciones(String observaciones) {
         this.observaciones = observaciones;
     }
+
 }
