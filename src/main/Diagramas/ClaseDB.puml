@@ -1,7 +1,6 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-' Enumeraciones
 enum RolUsuario {
   ADMINISTRADOR
   BRIGADISTA
@@ -30,7 +29,6 @@ enum EstadoVacunacion {
   NO_VACUNADA
 }
 
-' Entidades adaptadas a Convención Java con TIPOS DE DATOS
 class Departamento <<entity>> {
   + idDepartamento: Long (PK)
   + nombre: String [100]
@@ -118,27 +116,22 @@ class RegistroVacunacion <<entity>> {
   + observaciones: String [500]
 }
 
-' Relaciones Territoriales
-Departamento "1" -- "0..*" Municipio : contiene
-Municipio "1" -- "0..*" Canton : contiene
-Canton "1" -- "0..*" Colonia : contiene
-Colonia "1" -- "0..*" Vivienda : pertenece a
-Colonia "1" -- "0..*" CoberturaTerritorial : abarca
+Departamento "1" -- "0..*" Municipio
+Municipio "1" -- "0..*" Canton
+Canton "1" -- "0..*" Colonia
+Colonia "1" -- "0..*" Vivienda
+Colonia "1" -- "0..*" CoberturaTerritorial
 
-' Relaciones Vivienda y Responsable
-Responsable "1" -- "0..*" ViviendaResponsable : asociado con
-Vivienda "1" -- "0..*" ViviendaResponsable : aloja
+Responsable "1" -- "0..*" ViviendaResponsable
+Vivienda "1" -- "0..*" ViviendaResponsable
 
-' Relaciones Mascotas
-Responsable "1" -- "0..*" Mascota : es responsable de
-Vivienda "1" -- "0..*" Mascota : habita en
+Responsable "1" -- "0..*" Mascota
+Vivienda "1" -- "0..*" Mascota
 
-' Relaciones Campaña
-CampanaVacunacion "1" -- "0..*" CoberturaTerritorial : define
-CampanaVacunacion "1" -- "0..*" RegistroVacunacion : registra
+CampanaVacunacion "1" -- "0..*" CoberturaTerritorial
+CampanaVacunacion "1" -- "0..*" RegistroVacunacion
 
-' Relaciones Registros
-Mascota "1" -- "0..*" RegistroVacunacion : recibe
-Usuario "1" -- "0..*" RegistroVacunacion : ejecuta
+Mascota "1" -- "0..*" RegistroVacunacion
+Usuario "1" -- "0..*" RegistroVacunacion
 
 @enduml

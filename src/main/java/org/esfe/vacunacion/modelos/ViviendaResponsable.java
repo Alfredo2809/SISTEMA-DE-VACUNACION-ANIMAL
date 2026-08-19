@@ -1,40 +1,38 @@
 package org.esfe.vacunacion.modelos;
 
-import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "vivienda_responsable")
 public class ViviendaResponsable {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_vivienda_responsable")
-    private Long idViviendaResponsable;
+    @EmbeddedId
+    private ViviendaResponsableId id;
 
     @ManyToOne
+    @MapsId("idVivienda")
     @JoinColumn(name = "id_vivienda", nullable = false)
     private Vivienda vivienda;
 
     @ManyToOne
+    @MapsId("idResponsable")
     @JoinColumn(name = "id_responsable", nullable = false)
     private Responsable responsable;
 
     public ViviendaResponsable() {
     }
 
-    public Long getIdViviendaResponsable() {
-        return idViviendaResponsable;
+    public ViviendaResponsableId getId() {
+        return id;
     }
 
-    public void setIdViviendaResponsable(Long idViviendaResponsable) {
-        this.idViviendaResponsable = idViviendaResponsable;
+    public void setId(ViviendaResponsableId id) {
+        this.id = id;
     }
 
     public Vivienda getVivienda() {
