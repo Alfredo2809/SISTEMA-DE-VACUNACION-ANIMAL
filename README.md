@@ -1,4 +1,4 @@
-## 📊 Diagramas del Proyecto
+##  Diagramas del Proyecto
 
 ### Diagrama de Clases
 ![Diagrama de Clases](https://www.plantuml.com/plantuml/proxy?src=https://raw.githubusercontent.com/Alfredo2809/SISTEMA-DE-VACUNACION-ANIMAL/refs/heads/developer/src/main/Diagramas/Clases.puml?v=20260818)
