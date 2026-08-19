@@ -25,6 +25,12 @@ enum EstadoMascota {
   OTRO
 }
 
+' Nuevo enumerador para clasificar el estado de la vacunación
+enum EstadoVacunacion {
+  VACUNADA
+  NO_VACUNADA
+}
+
 ' Clases Principales (UpperCamelCase)
 class CampanaVacunacion {
   - idCampana: String
@@ -96,16 +102,13 @@ class Usuario {
   + cambiarEstado(nuevoEstado: EstadoUsuario): void
 }
 
+' Clase unificada para los registros
 class RegistroVacunacion {
   - idRegistro: String
-  - fechaAplicacion: Date
-  - observaciones: String
-}
-
-class RegistroNoVacunado {
-  - idRegistroNoVacunado: String
-  - motivo: String
   - fechaRegistro: Date
+  - estado: EstadoVacunacion
+  - motivoNoVacunacion: String
+  - observaciones: String
 }
 
 ' Relaciones y Jerarquías
@@ -122,10 +125,7 @@ CampanaVacunacion "1" -- "1..*" CoberturaTerritorial : define
 CoberturaTerritorial "0..*" -- "1" Colonia : abarca
 
 Usuario "1" -- "0..*" RegistroVacunacion : ejecuta / registra
-Usuario "1" -- "0..*" RegistroNoVacunado : registra omitida
 CampanaVacunacion "1" -- "0..*" RegistroVacunacion : registra
-CampanaVacunacion "1" -- "0..*" RegistroNoVacunado : reporta en
-Mascota "1" -- "0..*" RegistroVacunacion : recibe
-Mascota "1" -- "0..*" RegistroNoVacunado : registra
+Mascota "1" -- "0..*" RegistroVacunacion : recibe / reporta
 
 @enduml

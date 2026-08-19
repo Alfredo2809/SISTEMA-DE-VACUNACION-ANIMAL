@@ -1,146 +1,121 @@
 @startuml
 skinparam classAttributeIconSize 0
-
 ' Enumeraciones
 enum RolUsuario {
   ADMINISTRADOR
   BRIGADISTA
   PERSONAL_AUTORIZADO
 }
-
 enum EstadoUsuario {
   ACTIVO
   INACTIVO
 }
-
 enum Especie {
   PERRO
   GATO
 }
-
 enum EstadoMascota {
   ACTIVO
   FALLECIDO
   DESAPARECIDO
   OTRO
 }
-
-' Entidades adaptadas a Convención Java (UpperCamelCase en Clases y lowerCamelCase en Atributos)
+enum EstadoVacunacion {
+  VACUNADA
+  NO_VACUNADA
+}
+' Entidades adaptadas a Convención Java con TIPOS DE DATOS
 class Departamento <<entity>> {
-  + idDepartamento: Long
-  + nombre: String
+  + idDepartamento: Long (PK)
+  + nombre: String [100]
 }
-
 class Municipio <<entity>> {
-  + idMunicipio: Long
-  + idDepartamento: Long
-  + nombre: String
+  + idMunicipio: Long (PK)
+  + idDepartamento: Long (FK)
+  + nombre: String [100]
 }
-
 class Canton <<entity>> {
-  + idCanton: Long
-  + idMunicipio: Long
-  + nombre: String
+  + idCanton: Long (PK)
+  + idMunicipio: Long (FK)
+  + nombre: String [100]
 }
-
 class Colonia <<entity>> {
-  + idColonia: Long
-  + idCanton: Long
-  + nombre: String
+  + idColonia: Long (PK)
+  + idCanton: Long (FK)
+  + nombre: String [100]
 }
-
 class Vivienda <<entity>> {
-  + idVivienda: Long
-  + idColonia: Long
-  + direccion: String
-  + referenciaUbicacion: String
+  + idVivienda: Long (PK)
+  + idColonia: Long (FK)
+  + direccion: String [255]
+  + referenciaUbicacion: String [255]
 }
-
 class Responsable <<entity>> {
-  + idResponsable: Long
-  + nombreCompleto: String
-  + telefono: String
-  + documentoIdentidad: String
+  + idResponsable: Long (PK)
+  + nombreCompleto: String [150]
+  + telefono: String [20]
+  + documentoIdentidad: String [20]
 }
-
 class ViviendaResponsable <<entity>> {
-  + idVivienda: Long
-  + idResponsable: Long
+  + idVivienda: Long (PK, FK)
+  + idResponsable: Long (PK, FK)
 }
-
 class Mascota <<entity>> {
-  + idMascota: Long
-  + idResponsable: Long
-  + idVivienda: Long
-  + nombre: String
-  + especie: Especie
+  + idMascota: Long (PK)
+  + idResponsable: Long (FK)
+  + idVivienda: Long (FK)
+  + nombre: String [100]
+  + especie: Especie (ENUM)
   + fechaNacimiento: LocalDate
   + edadAproximadaMeses: Integer
-  + estado: EstadoMascota
+  + estado: EstadoMascota (ENUM)
 }
-
 class Usuario <<entity>> {
-  + idUsuario: Long
-  + nombreCompleto: String
-  + correo: String
-  + contrasena: String
-  + rol: RolUsuario
-  + estado: EstadoUsuario
+  + idUsuario: Long (PK)
+  + nombreCompleto: String [150]
+  + correo: String [100]
+  + contrasena: String [255]
+  + rol: RolUsuario (ENUM)
+  + estado: EstadoUsuario (ENUM)
 }
-
 class CampanaVacunacion <<entity>> {
-  + idCampana: Long
-  + nombre: String
+  + idCampana: Long (PK)
+  + nombre: String [150]
   + fechaInicio: LocalDate
   + fechaFin: LocalDate
-  + estado: String
+  + estado: String [50]
 }
-
 class CoberturaTerritorial <<entity>> {
-  + idCobertura: Long
-  + idCampana: Long
-  + idColonia: Long
+  + idCobertura: Long (PK)
+  + idCampana: Long (FK)
+  + idColonia: Long (FK)
 }
-
 class RegistroVacunacion <<entity>> {
-  + idRegistro: Long
-  + idMascota: Long
-  + idCampana: Long
-  + idUsuario: Long
-  + fechaAplicacion: LocalDateTime
-  + observaciones: String
-}
-
-class RegistroNoVacunado <<entity>> {
-  + idRegistroNoVacunado: Long
-  + idMascota: Long
-  + idCampana: Long
-  + idUsuario: Long
-  + motivo: String
+  + idRegistro: Long (PK)
+  + idMascota: Long (FK)
+  + idCampana: Long (FK)
+  + idUsuario: Long (FK)
+  + estado: EstadoVacunacion (ENUM)
   + fechaRegistro: LocalDateTime
+  + motivoNoVacunacion: String [500]
+  + observaciones: String [500]
 }
-
-' Relaciones
-Departamento "1" -- "0..*" Municipio : idDepartamento
-Municipio "1" -- "0..*" Canton : idMunicipio
-Canton "1" -- "0..*" Colonia : idCanton
-Colonia "1" -- "0..*" Vivienda : idColonia
-Colonia "1" -- "0..*" CoberturaTerritorial : idColonia
-
-Responsable "1" -- "0..*" ViviendaResponsable : idResponsable
-Vivienda "1" -- "0..*" ViviendaResponsable : idVivienda
-
-Responsable "1" -- "0..*" Mascota : idResponsable
-Vivienda "1" -- "0..*" Mascota : idVivienda
-
-CampanaVacunacion "1" -- "0..*" CoberturaTerritorial : idCampana
-CampanaVacunacion "1" -- "0..*" RegistroVacunacion : idCampana
-CampanaVacunacion "1" -- "0..*" RegistroNoVacunado : idCampana
-
-Mascota "1" -- "0..*" RegistroVacunacion : idMascota
-Mascota "1" -- "0..*" RegistroNoVacunado : idMascota
-
-Usuario "1" -- "0..*" RegistroVacunacion : idUsuario
-Usuario "1" -- "0..*" RegistroNoVacunado : idUsuario
-
+' Relaciones Territoriales
+Departamento "1" -- "0..*" Municipio : contiene
+Municipio "1" -- "0..*" Canton : contiene
+Canton "1" -- "0..*" Colonia : contiene
+Colonia "1" -- "0..*" Vivienda : pertenece a
+Colonia "1" -- "0..*" CoberturaTerritorial : abarca
+' Relaciones Vivienda y Responsable
+Responsable "1" -- "0..*" ViviendaResponsable : asociado con
+Vivienda "1" -- "0..*" ViviendaResponsable : aloja
+' Relaciones Mascotas
+Responsable "1" -- "0..*" Mascota : es responsable de
+Vivienda "1" -- "0..*" Mascota : habita en
+' Relaciones Campaña
+CampanaVacunacion "1" -- "0..*" CoberturaTerritorial : define
+CampanaVacunacion "1" -- "0..*" RegistroVacunacion : registra
+' Relaciones Registros
+Mascota "1" -- "0..*" RegistroVacunacion : recibe
+Usuario "1" -- "0..*" RegistroVacunacion : ejecuta
 @enduml
