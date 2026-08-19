@@ -1,19 +1,11 @@
 package org.esfe.vacunacion.modelos;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "canton")
 public class Canton {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCanton;
@@ -25,39 +17,26 @@ public class Canton {
     @JoinColumn(name = "idMunicipio", nullable = false)
     private Municipio municipio;
 
-    // Constructor predeterminado (exigido por JPA)
-    public Canton() {
-    }
+    @OneToMany(mappedBy = "canton", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Colonia> colonias = new ArrayList<>();
 
-    // Constructor parametrizado
+    public Canton() {}
+
     public Canton(Long idCanton, String nombre, Municipio municipio) {
         this.idCanton = idCanton;
         this.nombre = nombre;
         this.municipio = municipio;
     }
 
-    // Getters y Setters
-    public Long getIdCanton() {
-        return idCanton;
-    }
+    public Long getIdCanton() { return idCanton; }
+    public void setIdCanton(Long idCanton) { this.idCanton = idCanton; }
 
-    public void setIdCanton(Long idCanton) {
-        this.idCanton = idCanton;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public Municipio getMunicipio() { return municipio; }
+    public void setMunicipio(Municipio municipio) { this.municipio = municipio; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Municipio getMunicipio() {
-        return municipio;
-    }
-
-    public void setMunicipio(Municipio municipio) {
-        this.municipio = municipio;
-    }
+    public List<Colonia> getColonias() { return colonias; }
+    public void setColonias(List<Colonia> colonias) { this.colonias = colonias; }
 }
