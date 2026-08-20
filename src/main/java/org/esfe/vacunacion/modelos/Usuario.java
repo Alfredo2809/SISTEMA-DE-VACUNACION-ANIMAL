@@ -10,13 +10,15 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
-    @Column(nullable = false, length = 100)
+    // Ajustado a length = 150 según el diagrama
+    @Column(nullable = false, length = 150)
     private String nombreCompleto;
 
     @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
-    @Column(nullable = false)
+    // Explicitado length = 255 según el diagrama
+    @Column(nullable = false, length = 255)
     private String contrasena;
 
     @Enumerated(EnumType.STRING)
