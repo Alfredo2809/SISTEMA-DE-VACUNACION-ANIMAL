@@ -1,19 +1,11 @@
 package org.esfe.vacunacion.modelos;
-
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "municipio")
 public class Municipio {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idMunicipio;
@@ -25,39 +17,26 @@ public class Municipio {
     @JoinColumn(name = "idDepartamento", nullable = false)
     private Departamento departamento;
 
-    // Constructor predeterminado (exigido por JPA)
-    public Municipio() {
-    }
+    @OneToMany(mappedBy = "municipio", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Canton> cantones = new ArrayList<>();
 
-    // Constructor parametrizado
+    public Municipio() {}
+
     public Municipio(Long idMunicipio, String nombre, Departamento departamento) {
         this.idMunicipio = idMunicipio;
         this.nombre = nombre;
         this.departamento = departamento;
     }
 
-    // Getters y Setters
-    public Long getIdMunicipio() {
-        return idMunicipio;
-    }
+    public Long getIdMunicipio() { return idMunicipio; }
+    public void setIdMunicipio(Long idMunicipio) { this.idMunicipio = idMunicipio; }
 
-    public void setIdMunicipio(Long idMunicipio) {
-        this.idMunicipio = idMunicipio;
-    }
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public String getNombre() {
-        return nombre;
-    }
+    public Departamento getDepartamento() { return departamento; }
+    public void setDepartamento(Departamento departamento) { this.departamento = departamento; }
 
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public void setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-    }
+    public List<Canton> getCantones() { return cantones; }
+    public void setCantones(List<Canton> cantones) { this.cantones = cantones; }
 }
