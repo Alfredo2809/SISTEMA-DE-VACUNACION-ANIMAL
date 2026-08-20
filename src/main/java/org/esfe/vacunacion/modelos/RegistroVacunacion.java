@@ -1,8 +1,6 @@
 package org.esfe.vacunacion.modelos;
 
-
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -11,78 +9,56 @@ public class RegistroVacunacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_registro")
     private Long idRegistro;
 
     @ManyToOne
-    @JoinColumn(name = "id_mascota", nullable = false)
+    @JoinColumn(name = "idMascota", nullable = false)
     private Mascota mascota;
 
     @ManyToOne
-    @JoinColumn(name = "id_campana", nullable = false)
+    @JoinColumn(name = "idCampana", nullable = false)
     private CampanaVacunacion campana;
 
     @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
+    @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario usuario;
 
-    @Column(name = "fecha_aplicacion", nullable = false)
-    private LocalDateTime fechaAplicacion;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoVacunacion estado;
 
-    @Column(name = "observaciones", length = 255)
+    @Column(nullable = false)
+    private LocalDateTime fechaRegistro;
+
+    @Column(length = 500)
+    private String motivoNoVacunacion;
+
+    @Column(length = 500)
     private String observaciones;
 
-    // Constructor vacío
-    public RegistroVacunacion() {
-    }
+    public RegistroVacunacion() {}
 
-    // Getters y Setters
-    public Long getIdRegistro() {
-        return idRegistro;
-    }
+    public Long getIdRegistro() { return idRegistro; }
+    public void setIdRegistro(Long idRegistro) { this.idRegistro = idRegistro; }
 
-    public void setIdRegistro(Long idRegistro) {
-        this.idRegistro = idRegistro;
-    }
+    public Mascota getMascota() { return mascota; }
+    public void setMascota(Mascota mascota) { this.mascota = mascota; }
 
-    public Mascota getMascota() {
-        return mascota;
-    }
+    public CampanaVacunacion getCampana() { return campana; }
+    public void setCampana(CampanaVacunacion campana) { this.campana = campana; }
 
-    public void setMascota(Mascota mascota) {
-        this.mascota = mascota;
-    }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-    public CampanaVacunacion getCampana() {
-        return campana;
-    }
+    public EstadoVacunacion getEstado() { return estado; }
+    public void setEstado(EstadoVacunacion estado) { this.estado = estado; }
 
-    public void setCampana(CampanaVacunacion campana) {
-        this.campana = campana;
-    }
+    public LocalDateTime getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(LocalDateTime fechaRegistro) { this.fechaRegistro = fechaRegistro; }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
+    public String getMotivoNoVacunacion() { return motivoNoVacunacion; }
+    public void setMotivoNoVacunacion(String motivoNoVacunacion) { this.motivoNoVacunacion = motivoNoVacunacion; }
 
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public LocalDateTime getFechaAplicacion() {
-        return fechaAplicacion;
-    }
-
-    public void setFechaAplicacion(LocalDateTime fechaAplicacion) {
-        this.fechaAplicacion = fechaAplicacion;
-    }
-
-    public String getObservaciones() {
-        return observaciones;
-    }
-
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
-
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 }
