@@ -1,4 +1,4 @@
-package org.esfe.vacunacion.servicios;
+package org.esfe.vacunacion.servicios.interfaces;
 
 import org.esfe.vacunacion.modelos.ViviendaResponsable;
 
