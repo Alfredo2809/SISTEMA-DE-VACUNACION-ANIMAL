@@ -1,17 +1,16 @@
 package org.esfe.vacunacion.servicios.implementaciones;
 
-
-import org.esfe.vacunacion.servicios.interfaces.IUsuarioService;
-
 import org.esfe.vacunacion.modelos.EstadoUsuario;
 import org.esfe.vacunacion.modelos.RolUsuario;
 import org.esfe.vacunacion.modelos.Usuario;
 import org.esfe.vacunacion.repositorios.IUsuarioRepository;
+import org.esfe.vacunacion.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 @Service
 public class UsuarioService implements IUsuarioService {
 
@@ -39,44 +38,45 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-    public List<Usuario> obtenerPorEstado(EstadoUsuario estado) {
-        return usuarioRepository.findByEstado(estado);
-    }
+    public Usuario guardar(Usuario usuario) {
 
-    @Override
-    public Usuario crear(Usuario usuario) {
-        if (usuarioRepository.existsByCorreo(usuario.getCorreo())) {
-            throw new IllegalArgumentException("El correo ya se encuentra registrado.");
+        if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
+            usuario.setContrasena(usuario.getContrasena());
         }
         return usuarioRepository.save(usuario);
     }
 
     @Override
-    public Usuario actualizar(Long idUsuario, Usuario usuarioDetalles) {
+    public void eliminarPorId(Long idUsuario) {
+        usuarioRepository.deleteById(idUsuario);
+    }
+
+    @Override
+    public Usuario iniciarSesion(String correo, String contrasena) {
+        Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
+        if (usuarioOpt.isPresent()) {
+            Usuario usuario = usuarioOpt.get();
+            if (usuario.getContrasena() != null && usuario.getContrasena().equals(contrasena)) {
+                return usuario;
+            }
+        }
+        throw new RuntimeException("Credenciales incorrectas");
+    }
+
+
+    @Override
+    public Usuario cambiarRol(Long idUsuario, RolUsuario nuevoRol) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
-
-        usuario.setNombreCompleto(usuarioDetalles.getNombreCompleto());
-        usuario.setRol(usuarioDetalles.getRol());
-        usuario.setEstado(usuarioDetalles.getEstado());
-
-        if (usuarioDetalles.getContrasena() != null && !usuarioDetalles.getContrasena().isEmpty()) {
-            usuario.setContrasena(usuarioDetalles.getContrasena());
-        }
-
+        usuario.setRol(nuevoRol);
         return usuarioRepository.save(usuario);
     }
 
     @Override
-    public void cambiarEstado(Long idUsuario, EstadoUsuario nuevoEstado) {
+    public Usuario cambiarEstado(Long idUsuario, EstadoUsuario nuevoEstado) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
                 .orElseThrow(() -> new RuntimeException("Usuario no encontrado con ID: " + idUsuario));
         usuario.setEstado(nuevoEstado);
-        usuarioRepository.save(usuario);
-    }
-
-    @Override
-    public boolean existePorCorreo(String correo) {
-        return usuarioRepository.existsByCorreo(correo);
+        return usuarioRepository.save(usuario);
     }
 }
