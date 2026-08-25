@@ -1,7 +1,8 @@
-package org.esfe.vacunacion.servicios;
+package org.esfe.vacunacion.servicios.implementaciones;
 
 import org.esfe.vacunacion.modelos.Responsable;
 import org.esfe.vacunacion.repositorios.ResponsableRepository;
+import org.esfe.vacunacion.servicios.interfaces.IResponsableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

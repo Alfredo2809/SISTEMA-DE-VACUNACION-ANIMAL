@@ -1,7 +1,8 @@
-package org.esfe.vacunacion.servicios;
+package org.esfe.vacunacion.servicios.implementaciones;
 
 import org.esfe.vacunacion.modelos.Vivienda;
 import org.esfe.vacunacion.repositorios.ViviendaRepository;
+import org.esfe.vacunacion.servicios.interfaces.IViviendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
