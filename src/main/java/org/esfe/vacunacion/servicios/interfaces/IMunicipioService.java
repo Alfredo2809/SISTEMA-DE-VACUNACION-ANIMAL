@@ -8,4 +8,5 @@ public interface IMunicipioService {
     List<Municipio> obtenerTodos();
     Optional<Municipio> obtenerPorId(Long id);
     void eliminar(Long id);
+    boolean existeDepartamento(Long idDepartamento);
 }
