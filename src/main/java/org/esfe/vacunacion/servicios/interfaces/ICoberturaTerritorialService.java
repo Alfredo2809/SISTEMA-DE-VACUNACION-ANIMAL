@@ -3,6 +3,9 @@ package org.esfe.vacunacion.servicios.interfaces;
 import org.esfe.vacunacion.modelos.CoberturaTerritorial;
 
 import java.util.List;
+/**
+ * Interfaz de servicio para la logica de negocio de CoberturaTerritorial.
+ */
 
 public interface ICoberturaTerritorialService {
 
