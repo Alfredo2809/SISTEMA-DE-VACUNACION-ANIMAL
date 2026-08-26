@@ -4,6 +4,9 @@ import org.esfe.vacunacion.modelos.Responsable;
 
 import java.util.List;
 
+/**
+ * Interfaz de servicio para la logica de negocio de Responsable.
+ */
 public interface IResponsableService {
 
     List<Responsable> listarTodos();
