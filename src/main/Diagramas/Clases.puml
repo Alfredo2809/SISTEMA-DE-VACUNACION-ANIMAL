@@ -36,6 +36,10 @@ class CampanaVacunacion {
 class CoberturaTerritorial {
   - idCobertura: String
   + listarPorCampana(idCampana: Long): List<CoberturaTerritorial>
+  + listarTodas(): List<CoberturaTerritorial>
+  + buscarPorId(id: Long): CoberturaTerritorial
+  + guardar(coberturaTerritorial: CoberturaTerritorial): CoberturaTerritorial
+  + eliminar(id: Long): void
 }
 class Departamento {
   - idDepartamento: String
@@ -78,6 +82,10 @@ class Vivienda {
   - referenciaUbicacion: String
   + actualizarDireccion(nuevaDireccion: String): void
   + listarPorColonia(idColonia: Long): List<Vivienda>
+  + listarTodas(): List<Vivienda>
+  + buscarPorId(id: Long): Vivienda
+  + guardar(vivienda: Vivienda): Vivienda
+  + eliminar(id: Long): void
 }
 class Responsable {
   - idResponsable: String
@@ -86,11 +94,17 @@ class Responsable {
   - documentoIdentidad: String
   + actualizarTelefono(nuevoTelefono: String): void
   + existsByDocumentoIdentidad(documentoIdentidad: String): Boolean
+  + listarTodos(): List<Responsable>
+  + buscarPorId(id: Long): Responsable
+  + guardar(responsable: Responsable): Responsable
+  + eliminar(id: Long): void
 }
 class ViviendaResponsable {
   - idVivienda: Long
   - idResponsable: Long
   + existsById_IdViviendaAndId_IdResponsable(idVivienda: Long, idResponsable: Long): Boolean
+  + listarTodos(): List<ViviendaResponsable>
+  + guardar(viviendaResponsable: ViviendaResponsable): ViviendaResponsable
 }
 class Mascota {
   - idMascota: String
