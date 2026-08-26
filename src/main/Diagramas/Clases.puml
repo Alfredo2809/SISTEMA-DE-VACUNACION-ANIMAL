@@ -40,18 +40,37 @@ class CoberturaTerritorial {
 class Departamento {
   - idDepartamento: String
   - nombre: String
+  + guardar(departamento: Departamento): Departamento
+  + obtenerTodos(): List<Departamento>
+  + obtenerPorId(id: Long): Optional<Departamento>
+  + eliminar(id: Long): void
 }
 class Municipio {
   - idMunicipio: String
   - nombre: String
+  + guardar(municipio: Municipio): Municipio
+  + obtenerTodos(): List<Municipio>
+  + obtenerPorId(id: Long): Optional<Municipio>
+  + eliminar(id: Long): void
+  + existeDepartamento(idDepartamento: Long): Boolean
 }
 class Canton {
   - idCanton: String
   - nombre: String
+  + guardar(canton: Canton): Canton
+  + obtenerTodos(): List<Canton>
+  + obtenerPorId(id: Long): Optional<Canton>
+  + eliminar(id: Long): void
+  + existeMunicipio(idMunicipio: Long): Boolean
 }
 class Colonia {
   - idColonia: String
   - nombre: String
+  + guardar(colonia: Colonia): Colonia
+  + obtenerTodos(): List<Colonia>
+  + obtenerPorId(id: Long): Optional<Colonia>
+  + eliminar(id: Long): void
+  + existeCanton(idCanton: Long): Boolean
 }
 class Vivienda {
   - idVivienda: String
