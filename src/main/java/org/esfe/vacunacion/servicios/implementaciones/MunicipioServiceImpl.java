@@ -1,6 +1,7 @@
 package org.esfe.vacunacion.servicios.implementaciones;
 import org.esfe.vacunacion.modelos.Municipio;
 import org.esfe.vacunacion.repositorios.MunicipioRepository;
+import org.esfe.vacunacion.repositorios.DepartamentoRepository;
 import org.esfe.vacunacion.servicios.interfaces.IMunicipioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,9 +14,15 @@ public class MunicipioServiceImpl implements IMunicipioService {
     @Autowired
     private MunicipioRepository municipioRepository;
 
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
+
     @Override
     public Municipio guardar(Municipio municipio) {
-        return municipioRepository.save(municipio);
+        if (existeDepartamento(municipio.getDepartamento().getIdDepartamento())) {
+            return municipioRepository.save(municipio);
+        }
+        throw new RuntimeException("El departamento no existe");
     }
 
     @Override
@@ -31,5 +38,10 @@ public class MunicipioServiceImpl implements IMunicipioService {
     @Override
     public void eliminar(Long id) {
         municipioRepository.deleteById(id);
+    }
+
+    @Override
+    public boolean existeDepartamento(Long idDepartamento) {
+        return departamentoRepository.existsById(idDepartamento);
     }
 }
