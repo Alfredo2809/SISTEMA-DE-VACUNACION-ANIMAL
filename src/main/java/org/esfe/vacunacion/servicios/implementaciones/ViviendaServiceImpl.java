@@ -7,7 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * Implementacion del servicio de Vivienda.
+ */
 @Service
 public class ViviendaServiceImpl implements IViviendaService {
 
