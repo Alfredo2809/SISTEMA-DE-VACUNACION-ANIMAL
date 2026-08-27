@@ -107,25 +107,38 @@ class ViviendaResponsable {
   + guardar(viviendaResponsable: ViviendaResponsable): ViviendaResponsable
 }
 class Mascota {
-  - idMascota: String
+  - idMascota: Long
   - nombre: String
   - especie: Especie
-  - fechaNacimiento: Date
+  - fechaNacimiento: LocalDate
   - edadAproximadaMeses: Integer
   - estado: EstadoMascota
-  + actualizarInformacion(nombre: String, especie: Especie, edad: Integer): void
-  + cambiarEstado(nuevoEstado: EstadoMascota): void
+  - responsable: Responsable
+  - vivienda: Vivienda
+  + obtenerTodas(): List<Mascota>
+  + obtenerPorId(idMascota: Long): Optional<Mascota>
+  + guardar(mascota: Mascota): Mascota
+  + eliminarPorId(idMascota: Long): void
+  + actualizarInformacion(idMascota: Long, nombre: String, especie: Especie, edadAproximadaMeses: Integer): Mascota
+  + cambiarEstado(idMascota: Long, nuevoEstado: EstadoMascota): Mascota
 }
+
 class Usuario {
-  - idUsuario: String
+  - idUsuario: Long
   - nombreCompleto: String
   - correo: String
   - contrasena: String
   - rol: RolUsuario
   - estado: EstadoUsuario
-  + iniciarSesion(correo: String, contrasena: String): Boolean
-  + cambiarRol(nuevoRol: RolUsuario): void
-  + cambiarEstado(nuevoEstado: EstadoUsuario): void
+  + obtenerTodos(): List<Usuario>
+  + obtenerPorId(idUsuario: Long): Optional<Usuario>
+  + obtenerPorCorreo(correo: String): Optional<Usuario>
+  + obtenerPorRol(rol: RolUsuario): List<Usuario>
+  + guardar(usuario: Usuario): Usuario
+  + eliminarPorId(idUsuario: Long): void
+  + iniciarSesion(correo: String, contrasena: String): Usuario
+  + cambiarRol(idUsuario: Long, nuevoRol: RolUsuario): Usuario
+  + cambiarEstado(idUsuario: Long, nuevoEstado: EstadoUsuario): Usuario
 }
 ' Clase unificada para los registros
 class RegistroVacunacion {
