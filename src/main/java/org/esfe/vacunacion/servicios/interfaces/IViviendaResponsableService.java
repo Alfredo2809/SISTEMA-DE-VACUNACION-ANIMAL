@@ -4,6 +4,10 @@ import org.esfe.vacunacion.modelos.ViviendaResponsable;
 
 import java.util.List;
 
+/**
+ * Interfaz de servicio para la logica de negocio de ViviendaResponsable.
+ */
+
 public interface IViviendaResponsableService {
 
     List<ViviendaResponsable> listarTodos();

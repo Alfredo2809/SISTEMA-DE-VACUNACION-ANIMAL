@@ -4,6 +4,9 @@ import org.esfe.vacunacion.modelos.Vivienda;
 
 import java.util.List;
 
+/**
+ * Interfaz de servicio para la logica de negocio de Vivienda.
+ */
 public interface IViviendaService {
 
     List<Vivienda> listarTodas();

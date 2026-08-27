@@ -40,22 +40,45 @@ class CampanaVacunacion {
 class CoberturaTerritorial {
   - idCobertura: String
   + listarPorCampana(idCampana: Long): List<CoberturaTerritorial>
+  + listarTodas(): List<CoberturaTerritorial>
+  + buscarPorId(id: Long): CoberturaTerritorial
+  + guardar(coberturaTerritorial: CoberturaTerritorial): CoberturaTerritorial
+  + eliminar(id: Long): void
 }
 class Departamento {
   - idDepartamento: String
   - nombre: String
+  + guardar(departamento: Departamento): Departamento
+  + obtenerTodos(): List<Departamento>
+  + obtenerPorId(id: Long): Optional<Departamento>
+  + eliminar(id: Long): void
 }
 class Municipio {
   - idMunicipio: String
   - nombre: String
+  + guardar(municipio: Municipio): Municipio
+  + obtenerTodos(): List<Municipio>
+  + obtenerPorId(id: Long): Optional<Municipio>
+  + eliminar(id: Long): void
+  + existeDepartamento(idDepartamento: Long): Boolean
 }
 class Canton {
   - idCanton: String
   - nombre: String
+  + guardar(canton: Canton): Canton
+  + obtenerTodos(): List<Canton>
+  + obtenerPorId(id: Long): Optional<Canton>
+  + eliminar(id: Long): void
+  + existeMunicipio(idMunicipio: Long): Boolean
 }
 class Colonia {
   - idColonia: String
   - nombre: String
+  + guardar(colonia: Colonia): Colonia
+  + obtenerTodos(): List<Colonia>
+  + obtenerPorId(id: Long): Optional<Colonia>
+  + eliminar(id: Long): void
+  + existeCanton(idCanton: Long): Boolean
 }
 class Vivienda {
   - idVivienda: String
@@ -63,6 +86,10 @@ class Vivienda {
   - referenciaUbicacion: String
   + actualizarDireccion(nuevaDireccion: String): void
   + listarPorColonia(idColonia: Long): List<Vivienda>
+  + listarTodas(): List<Vivienda>
+  + buscarPorId(id: Long): Vivienda
+  + guardar(vivienda: Vivienda): Vivienda
+  + eliminar(id: Long): void
 }
 class Responsable {
   - idResponsable: String
@@ -71,32 +98,51 @@ class Responsable {
   - documentoIdentidad: String
   + actualizarTelefono(nuevoTelefono: String): void
   + existsByDocumentoIdentidad(documentoIdentidad: String): Boolean
+  + listarTodos(): List<Responsable>
+  + buscarPorId(id: Long): Responsable
+  + guardar(responsable: Responsable): Responsable
+  + eliminar(id: Long): void
 }
 class ViviendaResponsable {
   - idVivienda: Long
   - idResponsable: Long
   + existsById_IdViviendaAndId_IdResponsable(idVivienda: Long, idResponsable: Long): Boolean
+  + listarTodos(): List<ViviendaResponsable>
+  + guardar(viviendaResponsable: ViviendaResponsable): ViviendaResponsable
 }
 class Mascota {
-  - idMascota: String
+  - idMascota: Long
   - nombre: String
   - especie: Especie
-  - fechaNacimiento: Date
+  - fechaNacimiento: LocalDate
   - edadAproximadaMeses: Integer
   - estado: EstadoMascota
-  + actualizarInformacion(nombre: String, especie: Especie, edad: Integer): void
-  + cambiarEstado(nuevoEstado: EstadoMascota): void
+  - responsable: Responsable
+  - vivienda: Vivienda
+  + obtenerTodas(): List<Mascota>
+  + obtenerPorId(idMascota: Long): Optional<Mascota>
+  + guardar(mascota: Mascota): Mascota
+  + eliminarPorId(idMascota: Long): void
+  + actualizarInformacion(idMascota: Long, nombre: String, especie: Especie, edadAproximadaMeses: Integer): Mascota
+  + cambiarEstado(idMascota: Long, nuevoEstado: EstadoMascota): Mascota
 }
+
 class Usuario {
-  - idUsuario: String
+  - idUsuario: Long
   - nombreCompleto: String
   - correo: String
   - contrasena: String
   - rol: RolUsuario
   - estado: EstadoUsuario
-  + iniciarSesion(correo: String, contrasena: String): Boolean
-  + cambiarRol(nuevoRol: RolUsuario): void
-  + cambiarEstado(nuevoEstado: EstadoUsuario): void
+  + obtenerTodos(): List<Usuario>
+  + obtenerPorId(idUsuario: Long): Optional<Usuario>
+  + obtenerPorCorreo(correo: String): Optional<Usuario>
+  + obtenerPorRol(rol: RolUsuario): List<Usuario>
+  + guardar(usuario: Usuario): Usuario
+  + eliminarPorId(idUsuario: Long): void
+  + iniciarSesion(correo: String, contrasena: String): Usuario
+  + cambiarRol(idUsuario: Long, nuevoRol: RolUsuario): Usuario
+  + cambiarEstado(idUsuario: Long, nuevoEstado: EstadoUsuario): Usuario
 }
 ' Clase unificada para los registros
 class RegistroVacunacion {

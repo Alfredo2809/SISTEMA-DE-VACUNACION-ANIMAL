@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * Implementacion del servicio de Responsable.
+ */
 @Service
 public class ResponsableServiceImpl implements IResponsableService {
 
