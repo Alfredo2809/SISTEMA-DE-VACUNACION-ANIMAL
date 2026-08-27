@@ -32,6 +32,10 @@ class CampanaVacunacion {
   - fechaInicio: Date
   - fechaFin: Date
   - estado: String
+  + listar(): List<CampanaVacunacion>
+    + buscarPorId(id: Long): Optional<CampanaVacunacion>
+    + guardar(campana: CampanaVacunacion): CampanaVacunacion
+    + eliminar(id: Long): void
 }
 class CoberturaTerritorial {
   - idCobertura: String
@@ -101,7 +105,12 @@ class RegistroVacunacion {
   - estado: EstadoVacunacion
   - motivoNoVacunacion: String
   - observaciones: String
+  + listar(): List<RegistroVacunacion>
+    + buscarPorId(id: Long): Optional<RegistroVacunacion>
+    + guardar(registro: RegistroVacunacion): RegistroVacunacion
+    + eliminar(id: Long): void
 }
+
 ' Relaciones y Jerarquías
 Departamento "1" -- "1..*" Municipio : contiene
 Municipio "1" -- "1..*" Canton : contiene
