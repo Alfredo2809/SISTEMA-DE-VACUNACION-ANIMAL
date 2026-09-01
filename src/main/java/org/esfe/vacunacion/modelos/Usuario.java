@@ -1,6 +1,20 @@
 package org.esfe.vacunacion.modelos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -10,24 +24,44 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
+<<<<<<< HEAD
+    @NotBlank(message = "El nombre completo es requerido")
+=======
     // Ajustado a length = 150 según el diagrama
+>>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
     @Column(nullable = false, length = 150)
     private String nombreCompleto;
 
+    @NotBlank(message = "El correo es requerido")
+    @Email(message = "El correo debe tener un formato válido")
     @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
+<<<<<<< HEAD
+    @NotBlank(message = "La contraseña es requerida")
+=======
     // Explicitado length = 255 según el diagrama
+>>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
     @Column(nullable = false, length = 255)
     private String contrasena;
 
+    @NotNull(message = "El rol es requerido")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private RolUsuario rol;
 
+    @NotNull(message = "El estado es requerido")
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private EstadoUsuario estado;
+
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    @UpdateTimestamp
+    @Column(nullable = false)
+    private LocalDateTime fechaActualizacion;
 
     public Usuario() {}
 
@@ -48,4 +82,10 @@ public class Usuario {
 
     public EstadoUsuario getEstado() { return estado; }
     public void setEstado(EstadoUsuario estado) { this.estado = estado; }
+
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
 }
