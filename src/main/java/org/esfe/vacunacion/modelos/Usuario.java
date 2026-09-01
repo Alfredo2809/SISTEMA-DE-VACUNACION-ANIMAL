@@ -25,10 +25,21 @@ public class Usuario {
     private Long idUsuario;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @NotBlank(message = "El nombre completo es requerido")
 =======
     // Ajustado a length = 150 según el diagrama
 >>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+=======
+    // Ajustado a length = 150 según el diagrama
+=======
+<<<<<<< HEAD
+    @NotBlank(message = "El nombre completo es requerido")
+=======
+    // Ajustado a length = 150 según el diagrama
+>>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+>>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
     @Column(nullable = false, length = 150)
     private String nombreCompleto;
 
@@ -38,10 +49,21 @@ public class Usuario {
     private String correo;
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     @NotBlank(message = "La contraseña es requerida")
 =======
     // Explicitado length = 255 según el diagrama
 >>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+=======
+    // Explicitado length = 255 según el diagrama
+=======
+<<<<<<< HEAD
+    @NotBlank(message = "La contraseña es requerida")
+=======
+    // Explicitado length = 255 según el diagrama
+>>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+>>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
     @Column(nullable = false, length = 255)
     private String contrasena;
 

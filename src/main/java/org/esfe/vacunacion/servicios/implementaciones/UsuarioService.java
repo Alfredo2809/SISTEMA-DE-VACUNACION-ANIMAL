@@ -7,10 +7,19 @@ import org.esfe.vacunacion.repositorios.IUsuarioRepository;
 import org.esfe.vacunacion.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 =======
 >>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+<<<<<<< HEAD
+=======
+>>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +38,11 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+<<<<<<< HEAD
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
     public Page<Usuario> obtenerTodosPaginado(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
     }
@@ -41,6 +55,10 @@ public class UsuarioService implements IUsuarioService {
     @Override
 =======
 >>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+<<<<<<< HEAD
+=======
+>>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
     public Optional<Usuario> obtenerPorId(Long idUsuario) {
         return usuarioRepository.findById(idUsuario);
     }
@@ -58,9 +76,19 @@ public class UsuarioService implements IUsuarioService {
     @Override
     public Usuario guardar(Usuario usuario) {
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+=======
+
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+>>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
         if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
             usuario.setContrasena(usuario.getContrasena());
         }
@@ -85,9 +113,19 @@ public class UsuarioService implements IUsuarioService {
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 
 >>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+=======
+
+=======
+<<<<<<< HEAD
+=======
+
+>>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
+>>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
+>>>>>>> feature/VAC-17-CrearCampanasVacunacion
     @Override
     public Usuario cambiarRol(Long idUsuario, RolUsuario nuevoRol) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
