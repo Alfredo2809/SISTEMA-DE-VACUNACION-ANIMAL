@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asociaciones Vivienda - Responsable</title>
+</head>
+<body>
+
+<h1>Asociaciones de Viviendas y Responsables</h1>
+
+<a th:href="@{/vivienda-responsable/asociar}">+ Nueva asociación</a>
+
+<div th:if="${mensajeExito}" style="color: green;">
+    <p th:text="${mensajeExito}"></p>
+</div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Vivienda</th>
+        <th>Responsable</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="asociacion : ${asociaciones}">
+        <td th:text="${asociacion.vivienda.direccion}"></td>
+        <td th:text="${asociacion.responsable.nombreCompleto}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
