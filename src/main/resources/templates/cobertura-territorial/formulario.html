@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registrar Cobertura Territorial</title>
+</head>
+<body>
+
+<h1>Registrar Cobertura Territorial</h1>
+
+<form th:action="@{/cobertura-territorial/guardar}" th:object="${cobertura}" method="post">
+
+    <label>Campaña:</label>
+    <select th:field="*{campana}">
+        <option th:each="campana : ${campanas}"
+                th:value="${campana.idCampana}"
+                th:text="${campana.nombre}">
+        </option>
+    </select>
+    <br>
+
+    <label>Colonia:</label>
+    <select th:field="*{colonia}">
+        <option th:each="colonia : ${colonias}"
+                th:value="${colonia.idColonia}"
+                th:text="${colonia.nombre}">
+        </option>
+    </select>
+    <br>
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/cobertura-territorial}">Cancelar</a>
+
+</form>
+
+</body>
+</html>
