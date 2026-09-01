@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Asociar Responsable con Vivienda</title>
+</head>
+<body>
+
+<h1>Asociar Responsable con Vivienda</h1>
+
+<div th:if="${mensajeError}" style="color: red;">
+    <p th:text="${mensajeError}"></p>
+</div>
+
+<form th:action="@{/vivienda-responsable/guardar}" method="post">
+
+    <label>Vivienda:</label>
+    <select name="idVivienda" required>
+        <option th:each="vivienda : ${viviendas}"
+                th:value="${vivienda.idVivienda}"
+                th:text="${vivienda.direccion}">
+        </option>
+    </select>
+    <br>
+
+    <label>Responsable:</label>
+    <select name="idResponsable" required>
+        <option th:each="responsable : ${responsables}"
+                th:value="${responsable.idResponsable}"
+                th:text="${responsable.nombreCompleto}">
+        </option>
+    </select>
+    <br>
+
+    <button type="submit">Asociar</button>
+    <a th:href="@{/vivienda-responsable}">Cancelar</a>
+
+</form>
+
+</body>
+</html>
