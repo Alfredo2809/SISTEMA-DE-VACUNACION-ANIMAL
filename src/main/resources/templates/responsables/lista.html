@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Responsables</title>
+</head>
+<body>
+
+<h1>Listado de Responsables</h1>
+
+<a th:href="@{/responsables/nuevo}">+ Registrar nuevo responsable</a>
+
+<div th:if="${mensajeExito}" style="color: green;">
+    <p th:text="${mensajeExito}"></p>
+</div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Nombre Completo</th>
+        <th>Teléfono</th>
+        <th>Documento de Identidad</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="responsable : ${responsables}">
+        <td th:text="${responsable.idResponsable}"></td>
+        <td th:text="${responsable.nombreCompleto}"></td>
+        <td th:text="${responsable.telefono}"></td>
+        <td th:text="${responsable.documentoIdentidad}"></td>
+        <td>
+            <a th:href="@{/responsables/editar/{id}(id=${responsable.idResponsable})}">Editar</a>
+            |
+            <a th:href="@{/responsables/eliminar/{id}(id=${responsable.idResponsable})}">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
