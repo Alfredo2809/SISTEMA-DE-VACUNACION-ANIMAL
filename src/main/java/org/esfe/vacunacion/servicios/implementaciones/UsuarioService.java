@@ -6,14 +6,6 @@ import org.esfe.vacunacion.modelos.Usuario;
 import org.esfe.vacunacion.repositorios.IUsuarioRepository;
 import org.esfe.vacunacion.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-=======
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
->>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,22 +23,6 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-    public Page<Usuario> obtenerTodosPaginado(Pageable pageable) {
-        return usuarioRepository.findAll(pageable);
-    }
-
-    @Override
-    public Page<Usuario> buscarPorNombrePaginado(String nombre, Pageable pageable) {
-        return usuarioRepository.findByNombreCompletoContainingIgnoreCase(nombre, pageable);
-    }
-
-    @Override
-=======
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
->>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
     public Optional<Usuario> obtenerPorId(Long idUsuario) {
         return usuarioRepository.findById(idUsuario);
     }
@@ -63,14 +39,7 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario guardar(Usuario usuario) {
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
->>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
         if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
             usuario.setContrasena(usuario.getContrasena());
         }
@@ -94,14 +63,7 @@ public class UsuarioService implements IUsuarioService {
         throw new RuntimeException("Credenciales incorrectas");
     }
 
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
->>>>>>> 9967226b59ff5435e15d6296fb8f4837822cd480
     @Override
     public Usuario cambiarRol(Long idUsuario, RolUsuario nuevoRol) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
