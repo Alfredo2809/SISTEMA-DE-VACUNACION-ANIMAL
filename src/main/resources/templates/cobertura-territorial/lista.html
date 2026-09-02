@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Cobertura Territorial</title>
+</head>
+<body>
+
+<h1>Cobertura Territorial de Campañas</h1>
+
+<a th:href="@{/cobertura-territorial/nueva}">+ Registrar nueva cobertura</a>
+
+<div th:if="${mensajeExito}" style="color: green;">
+    <p th:text="${mensajeExito}"></p>
+</div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>Campaña</th>
+        <th>Colonia</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="cobertura : ${coberturas}">
+        <td th:text="${cobertura.campana.nombre}"></td>
+        <td th:text="${cobertura.colonia.nombre}"></td>
+        <td>
+            <a th:href="@{/cobertura-territorial/eliminar/{id}(id=${cobertura.idCobertura})}">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
