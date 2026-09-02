@@ -1,45 +1,42 @@
 package org.esfe.vacunacion.controladores;
 
 import org.esfe.vacunacion.modelos.CampanaVacunacion;
-import org.esfe.vacunacion.servicios.interfaces.ICampanaVacunacionService; // o ICampanaVacunacionService
+import org.esfe.vacunacion.servicios.interfaces.ICampanaVacunacionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
-@RestController
-@RequestMapping("/api/campanas")
+@Controller
+@RequestMapping("/campanas")
 public class CampanaVacunacionController {
 
     @Autowired
     private ICampanaVacunacionService campanaVacunacionService;
 
     @GetMapping
-    public ResponseEntity<List<CampanaVacunacion>> listar() {
-        return ResponseEntity.ok(campanaVacunacionService.listar()); // Revisa si el método se llama obtenerTodas() o listar()
+    public String index(Model model) {
+        model.addAttribute("campanas", campanaVacunacionService.listar());
+        model.addAttribute("campana", new CampanaVacunacion());
+        return "campanas/index"; // Ruta a la plantilla HTML
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<CampanaVacunacion> buscarPorId(@PathVariable Long id) {
-        return campanaVacunacionService.buscarPorId(id)
-                .map(campana -> ResponseEntity.ok(campana))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+    @PostMapping("/guardar")
+    public String guardar(@ModelAttribute("campana") CampanaVacunacion campana) {
+        campanaVacunacionService.guardar(campana);
+        return "redirect:/campanas";
     }
 
-    @PostMapping
-    public ResponseEntity<CampanaVacunacion> guardar(@RequestBody CampanaVacunacion campana) {
-        CampanaVacunacion nuevaCampana = campanaVacunacionService.guardar(campana);
-        return ResponseEntity.status(HttpStatus.CREATED).body(nuevaCampana);
+    @GetMapping("/editar/{id}")
+    public String editar(@PathVariable Long id, Model model) {
+        campanaVacunacionService.buscarPorId(id).ifPresent(c -> model.addAttribute("campana", c));
+        model.addAttribute("campanas", campanaVacunacionService.listar());
+        return "campanas/index";
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
-        if (campanaVacunacionService.buscarPorId(id).isPresent()) {
-            campanaVacunacionService.eliminar(id);
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.notFound().build();
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id) {
+        campanaVacunacionService.eliminar(id);
+        return "redirect:/campanas";
     }
 }
