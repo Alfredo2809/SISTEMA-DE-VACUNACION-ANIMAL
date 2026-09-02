@@ -6,11 +6,8 @@ import org.esfe.vacunacion.modelos.Usuario;
 import org.esfe.vacunacion.repositorios.IUsuarioRepository;
 import org.esfe.vacunacion.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
-<<<<<<< HEAD
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-=======
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,7 +25,6 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-<<<<<<< HEAD
     public Page<Usuario> obtenerTodosPaginado(Pageable pageable) {
         return usuarioRepository.findAll(pageable);
     }
@@ -39,8 +35,6 @@ public class UsuarioService implements IUsuarioService {
     }
 
     @Override
-=======
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
     public Optional<Usuario> obtenerPorId(Long idUsuario) {
         return usuarioRepository.findById(idUsuario);
     }
@@ -57,10 +51,6 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario guardar(Usuario usuario) {
-<<<<<<< HEAD
-=======
-
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
         if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
             usuario.setContrasena(usuario.getContrasena());
         }
@@ -84,10 +74,6 @@ public class UsuarioService implements IUsuarioService {
         throw new RuntimeException("Credenciales incorrectas");
     }
 
-<<<<<<< HEAD
-=======
-
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
     @Override
     public Usuario cambiarRol(Long idUsuario, RolUsuario nuevoRol) {
         Usuario usuario = usuarioRepository.findById(idUsuario)
