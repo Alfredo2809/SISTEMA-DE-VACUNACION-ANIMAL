@@ -24,11 +24,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
-<<<<<<< HEAD
     @NotBlank(message = "El nombre completo es requerido")
-=======
-    // Ajustado a length = 150 según el diagrama
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
     @Column(nullable = false, length = 150)
     private String nombreCompleto;
 
@@ -37,11 +33,7 @@ public class Usuario {
     @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
-<<<<<<< HEAD
     @NotBlank(message = "La contraseña es requerida")
-=======
-    // Explicitado length = 255 según el diagrama
->>>>>>> b5bcebd2db8c4a32f750858648503697716b458d
     @Column(nullable = false, length = 255)
     private String contrasena;
 
