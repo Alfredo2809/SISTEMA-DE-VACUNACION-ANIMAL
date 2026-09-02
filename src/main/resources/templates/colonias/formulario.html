@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <title th:text="${titulo != null ? titulo : 'Formulario Colonia'}">Colonia</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1 class="mt-4" th:text="${titulo != null ? titulo : 'Formulario de Colonia'}">Formulario</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a th:href="@{/colonias}">Colonias</a></li>
+        <li class="breadcrumb-item active">Formulario</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-building me-1"></i>
+                    Datos de la Colonia
+                </div>
+                <div class="card-body">
+                    <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <span th:text="${mensajeError}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <!--/*@thymesVar id="colonia" type="org.esfe.vacunacion.modelos.Colonia"*/-->
+                    <form th:action="@{/colonias}" th:object="${colonia}" method="post">
+                        <!-- Campo oculto para el ID -->
+                        <input type="hidden" th:field="*{idColonia}" />
+
+
+                        <div class="mb-3">
+                            <label for="canton" class="form-label">Cantón</label>
+                            <select id="canton" class="form-select" th:field="*{canton.idCanton}" required>
+                                <option value="">-- Seleccione un cantón --</option>
+                                <option th:each="c : ${cantones}"
+                                        th:value="${c.idCanton}"
+                                        th:text="${c.nombre}">
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre de la Colonia</label>
+                            <input type="text"
+                                   id="nombre"
+                                   class="form-control"
+                                   th:field="*{nombre}"
+                                   placeholder="Ingrese el nombre (Ej: Colonia Escalón)"
+                                   required />
+                        </div>
+
+                        <div class="d-flex justify-content-between pt-2">
+                            <a th:href="@{/colonias}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-1"></i>Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
