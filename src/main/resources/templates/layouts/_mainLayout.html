@@ -7,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <title>Vacunacion Animal</title>
-    <link th:href="@{css/styles.css}" rel="stylesheet" />
+    <link th:href="@{/css/styles.css}" rel="stylesheet" />
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -45,25 +45,25 @@
                     <div class="sb-sidenav-menu-heading">Mantenimientos</div>
 
                     <!-- Departamentos -->
-                    <a class="nav-link" href="/departamentos">
+                    <a class="nav-link" href="/geografico/departamentos">
                         <div class="sb-nav-link-icon"><i class="fas fa-map-marked-alt"></i></div>
                         Departamentos
                     </a>
 
                     <!-- Municipios -->
-                    <a class="nav-link" href="/municipios">
+                    <a class="nav-link" href="/geografico/municipios">
                         <div class="sb-nav-link-icon"><i class="fas fa-city"></i></div>
                         Municipios
                     </a>
 
                     <!-- Cantones -->
-                    <a class="nav-link" href="/cantones">
+                    <a class="nav-link" href="/geografico/cantones">
                         <div class="sb-nav-link-icon"><i class="fas fa-map-pin"></i></div>
                         Cantones
                     </a>
 
                     <!-- Colonias -->
-                    <a class="nav-link" href="/colonias">
+                    <a class="nav-link" href="/geografico/colonias">
                         <div class="sb-nav-link-icon"><i class="fas fa-draw-polygon"></i></div>
                         Colonias
                     </a>
@@ -118,6 +118,6 @@
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script th:src="@{js/scripts.js}"></script>
+<script th:src="@{/js/scripts.js}"></script>
 </body>
 </html>
