@@ -39,13 +39,13 @@ public class RegistroVacunacionServiceImpl implements IRegistroVacunacionService
     }
 
     private void validarRegistro(RegistroVacunacion registro) {
-        // 1. Validar que la mascota exista y esté ACTIVA
+        /* 1. Validar que la mascota exista y esté ACTIVA
         if (registro.getMascota() == null) {
             throw new IllegalArgumentException("Debe asociar una mascota al registro.");
         }
         if (registro.getMascota().getEstado() != EstadoMascota.ACTIVO) {
             throw new IllegalArgumentException("La mascota debe estar ACTIVA para registrar una vacunación.");
-        }
+        }*/
 
         // 2. Validar que la campaña exista y esté en curso
         if (registro.getCampana() == null) {
