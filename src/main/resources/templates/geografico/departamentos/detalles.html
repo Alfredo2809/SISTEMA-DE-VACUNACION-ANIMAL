@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+<head>
+    <title>Detalles del Departamento</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4" style="max-width: 600px;">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Detalles del Departamento</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>ID:</strong>
+                        <span th:text="${departamento.idDepartamento}">1</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Nombre:</strong>
+                        <span th:text="${departamento.nombre}">San Salvador</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a th:href="@{/geografico/departamentos}" class="btn btn-secondary">Volver</a>
+                <a th:href="@{/geografico/departamentos/editar/{id}(id=${departamento.idDepartamento})}" class="btn btn-warning">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

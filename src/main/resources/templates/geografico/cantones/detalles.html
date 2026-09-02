@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+<head>
+    <title>Detalles del Cantón</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4" style="max-width: 600px;">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Detalles del Cantón</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>ID:</strong>
+                        <span th:text="${canton.idCanton}">1</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Nombre:</strong>
+                        <span th:text="${canton.nombre}">El Carmen</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Municipio:</strong>
+                        <span th:text="${canton.municipio != null ? canton.municipio.nombre : 'N/A'}">San Salvador</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a th:href="@{/geografico/cantones}" class="btn btn-secondary">Volver</a>
+                <a th:href="@{/geografico/cantones/editar/{id}(id=${canton.idCanton})}" class="btn btn-warning">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

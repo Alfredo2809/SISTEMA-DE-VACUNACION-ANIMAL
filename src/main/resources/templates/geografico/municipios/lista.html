@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+<head>
+    <title>Lista de Municipios</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Gestión de Municipios</h2>
+        <a th:href="@{/geografico/municipios/crear}" class="btn btn-primary">+ Nuevo Municipio</a>
+    </div>
+
+    <!-- Alertas -->
+    <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${mensajeExito}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${mensajeError}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+    <!-- Tabla de datos -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table table-striped table-hover mb-0">
+                <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Departamento</th>
+                    <th class="text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="m : ${municipios}">
+                    <td th:text="${m.idMunicipio}">1</td>
+                    <td th:text="${m.nombre}">San Salvador Centro</td>
+                    <td th:text="${m.departamento != null ? m.departamento.nombre : 'Sin asignación'}">San Salvador</td>
+                    <td class="text-center">
+                        <a th:href="@{/geografico/municipios/detalles/{id}(id=${m.idMunicipio})}" class="btn btn-info btn-sm">Detalles</a>
+                        <a th:href="@{/geografico/municipios/editar/{id}(id=${m.idMunicipio})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/geografico/municipios/eliminar/{id}(id=${m.idMunicipio})}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Está seguro de eliminar este municipio?');">Eliminar</a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(municipios)}">
+                    <td colspan="4" class="text-center text-muted">No hay municipios registrados.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

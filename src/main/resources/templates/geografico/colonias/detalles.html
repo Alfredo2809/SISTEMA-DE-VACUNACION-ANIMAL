@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/main_layout}">
+<head>
+    <title>Detalles de la Colonia</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="container mt-4" style="max-width: 600px;">
+        <div class="card shadow-sm">
+            <div class="card-header bg-info text-white">
+                <h4 class="mb-0">Detalles de la Colonia</h4>
+            </div>
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>ID:</strong>
+                        <span th:text="${colonia.idColonia}">1</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Nombre:</strong>
+                        <span th:text="${colonia.nombre}">Col. Escalón</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Cantón:</strong>
+                        <span th:text="${colonia.canton != null ? colonia.canton.nombre : 'N/A'}">El Carmen</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="card-footer d-flex justify-content-between">
+                <a th:href="@{/geografico/colonias}" class="btn btn-secondary">Volver</a>
+                <a th:href="@{/geografico/colonias/editar/{id}(id=${colonia.idColonia})}" class="btn btn-warning">Editar</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
