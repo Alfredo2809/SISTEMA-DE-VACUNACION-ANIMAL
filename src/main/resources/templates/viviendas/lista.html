@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Viviendas</title>
+</head>
+<body>
+
+<h1>Listado de Viviendas</h1>
+
+<a th:href="@{/viviendas/nueva}">+ Registrar nueva vivienda</a>
+
+<div th:if="${mensajeExito}" style="color: green;">
+    <p th:text="${mensajeExito}"></p>
+</div>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Dirección</th>
+        <th>Referencia de Ubicación</th>
+        <th>Colonia</th>
+        <th>Acciones</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="vivienda : ${viviendas}">
+        <td th:text="${vivienda.idVivienda}"></td>
+        <td th:text="${vivienda.direccion}"></td>
+        <td th:text="${vivienda.referenciaUbicacion}"></td>
+        <td th:text="${vivienda.colonia.nombre}"></td>
+        <td>
+            <a th:href="@{/viviendas/editar/{id}(id=${vivienda.idVivienda})}">Editar</a>
+            |
+            <a th:href="@{/viviendas/eliminar/{id}(id=${vivienda.idVivienda})}">Eliminar</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
