@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulario de Vivienda</title>
+</head>
+<body>
+
+<h1>Registrar / Editar Vivienda</h1>
+
+<form th:action="@{/viviendas/guardar}" th:object="${vivienda}" method="post">
+
+    <input type="hidden" th:field="*{idVivienda}" />
+
+    <label>Dirección:</label>
+    <input type="text" th:field="*{direccion}" required />
+    <br>
+
+    <label>Referencia de Ubicación:</label>
+    <input type="text" th:field="*{referenciaUbicacion}" />
+    <br>
+
+    <label>Colonia:</label>
+    <select th:field="*{colonia}">
+        <option th:each="colonia : ${colonias}"
+                th:value="${colonia.idColonia}"
+                th:text="${colonia.nombre}">
+        </option>
+    </select>
+    <br>
+
+    <button type="submit">Guardar</button>
+    <a th:href="@{/viviendas}">Cancelar</a>
+
+</form>
+
+</body>
+</html>

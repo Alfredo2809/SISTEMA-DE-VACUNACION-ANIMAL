@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <title>Cantones</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1 class="mt-4">Gestión de Cantones</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Mantenimiento de Cantones</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-tree me-1"></i>
+                Listado de Cantones
+            </div>
+            <a th:href="@{/templates/geografico/cantones/crear}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i>Nuevo Cantón
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-1"></i>
+                <span th:text="${mensajeExito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                <span th:text="${mensajeError}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- Tabla de Cantones -->
+            <table class="table table-striped table-bordered table-hover mt-2">
+                <thead class="table-dark">
+                <tr>
+                    <th style="width: 10%;">ID</th>
+                    <th>Nombre del Cantón</th>
+                    <th>Municipio</th>
+                    <th style="width: 20%;" class="text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="c : ${cantones}">
+                    <td th:text="${c.idCanton}">1</td>
+                    <td th:text="${c.nombre}">El Carmen</td>
+                    <td th:text="${c.municipio != null ? c.municipio.nombre : 'Sin asignación'}">San Salvador Centro</td>
+                    <td class="text-center">
+                        <a th:href="@{/templates/geografico/cantones/editar/{id}(id=${c.idCanton})}"
+                           class="btn btn-warning btn-sm me-1"
+                           title="Editar">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+                        <a th:href="@{/templates/geografico/cantones/eliminar/{id}(id=${c.idCanton})}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Está seguro de eliminar este cantón?');"
+                           title="Eliminar">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(cantones)}">
+                    <td colspan="4" class="text-center text-muted py-3">
+                        No hay cantones registrados actualmente.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

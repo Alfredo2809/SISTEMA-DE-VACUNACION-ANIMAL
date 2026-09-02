@@ -1,94 +1,64 @@
 package org.esfe.vacunacion.modelos;
 
 import jakarta.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "registros_vacunacion")
+@Table(name = "registro_vacunacion")
 public class RegistroVacunacion {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long idRegistro;
 
-    @Column(nullable = false)
-    private LocalDate fechaRegistro;
+    @ManyToOne
+    @JoinColumn(name = "idMascota", nullable = false)
+    private Mascota mascota;
 
-    @Column(length = 255)
-    private String observaciones;
+    @ManyToOne
+    @JoinColumn(name = "idCampana", nullable = false)
+    private CampanaVacunacion campana;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "campana_id", nullable = false)
-    private CampanaVacunacion campanaVacunacion;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "vivienda_id", nullable = false)
-    private Vivienda vivienda;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "usuario_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "idUsuario", nullable = false)
     private Usuario usuario;
 
-    // Constructors
-    public RegistroVacunacion() {
-    }
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private EstadoVacunacion estado;
 
-    public RegistroVacunacion(Long id, LocalDate fechaRegistro, String observaciones,
-                              CampanaVacunacion campanaVacunacion, Vivienda vivienda, Usuario usuario) {
-        this.id = id;
-        this.fechaRegistro = fechaRegistro;
-        this.observaciones = observaciones;
-        this.campanaVacunacion = campanaVacunacion;
-        this.vivienda = vivienda;
-        this.usuario = usuario;
-    }
+    @Column(nullable = false)
+    private LocalDateTime fechaRegistro;
 
-    // Getters and Setters
-    public Long getId() {
-        return id;
-    }
+    @Column(length = 500)
+    private String motivoNoVacunacion;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(length = 500)
+    private String observaciones;
 
-    public LocalDate getFechaRegistro() {
-        return fechaRegistro;
-    }
+    public RegistroVacunacion() {}
 
-    public void setFechaRegistro(LocalDate fechaRegistro) {
-        this.fechaRegistro = fechaRegistro;
-    }
+    public Long getIdRegistro() { return idRegistro; }
+    public void setIdRegistro(Long idRegistro) { this.idRegistro = idRegistro; }
 
-    public String getObservaciones() {
-        return observaciones;
-    }
+    public Mascota getMascota() { return mascota; }
+    public void setMascota(Mascota mascota) { this.mascota = mascota; }
 
-    public void setObservaciones(String observaciones) {
-        this.observaciones = observaciones;
-    }
+    public CampanaVacunacion getCampana() { return campana; }
+    public void setCampana(CampanaVacunacion campana) { this.campana = campana; }
 
-    public CampanaVacunacion getCampanaVacunacion() {
-        return campanaVacunacion;
-    }
+    public Usuario getUsuario() { return usuario; }
+    public void setUsuario(Usuario usuario) { this.usuario = usuario; }
 
-    public void setCampanaVacunacion(CampanaVacunacion campanaVacunacion) {
-        this.campanaVacunacion = campanaVacunacion;
-    }
+    public EstadoVacunacion getEstado() { return estado; }
+    public void setEstado(EstadoVacunacion estado) { this.estado = estado; }
 
-    public Vivienda getVivienda() {
-        return vivienda;
-    }
+    public LocalDateTime getFechaRegistro() { return fechaRegistro; }
+    public void setFechaRegistro(LocalDateTime fechaRegistro) { this.fechaRegistro = fechaRegistro; }
 
-    public void setVivienda(Vivienda vivienda) {
-        this.vivienda = vivienda;
-    }
+    public String getMotivoNoVacunacion() { return motivoNoVacunacion; }
+    public void setMotivoNoVacunacion(String motivoNoVacunacion) { this.motivoNoVacunacion = motivoNoVacunacion; }
 
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
+    public String getObservaciones() { return observaciones; }
+    public void setObservaciones(String observaciones) { this.observaciones = observaciones; }
 }

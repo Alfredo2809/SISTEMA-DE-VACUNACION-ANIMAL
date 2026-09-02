@@ -5,6 +5,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -22,12 +24,9 @@ public class Vivienda {
     @Column(name = "referencia_ubicacion", length = 200)
     private String referenciaUbicacion;
 
-    // TODO: agregar relación @ManyToOne hacia Colonia (idColonia)
-    // cuando Eduardo suba la clase Colonia.java a developer (VAC-50).
-    // Ejemplo esperado:
-    // @ManyToOne
-    // @JoinColumn(name = "id_colonia")
-    // private Colonia colonia;
+    @ManyToOne
+    @JoinColumn(name = "id_colonia", nullable = false)
+    private Colonia colonia;
 
     public Vivienda() {
     }
@@ -54,5 +53,13 @@ public class Vivienda {
 
     public void setReferenciaUbicacion(String referenciaUbicacion) {
         this.referenciaUbicacion = referenciaUbicacion;
+    }
+
+    public Colonia getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(Colonia colonia) {
+        this.colonia = colonia;
     }
 }
