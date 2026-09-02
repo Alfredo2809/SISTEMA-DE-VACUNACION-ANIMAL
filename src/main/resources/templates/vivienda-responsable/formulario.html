@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <title th:text="${titulo != null ? titulo : 'Asociar Responsable con Vivienda'}">Asociación Vivienda-Responsable</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1 class="mt-4" th:text="${titulo != null ? titulo : 'Asociar Responsable con Vivienda'}">Asociación</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item"><a th:href="@{/vivienda-responsable}">Asociaciones</a></li>
+        <li class="breadcrumb-item active">Nuevo Registro</li>
+    </ol>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <i class="fas fa-link me-1"></i>
+                    Asignación de Responsables a Viviendas
+                </div>
+                <div class="card-body">
+                    <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <i class="fas fa-exclamation-triangle me-1"></i>
+                        <span th:text="${mensajeError}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <form th:action="@{/vivienda-responsable/guardar}" method="post">
+
+                        <div class="mb-3">
+                            <label for="idVivienda" class="form-label">Vivienda</label>
+                            <select id="idVivienda" name="idVivienda" class="form-select" required>
+                                <option value="">-- Seleccione una vivienda --</option>
+                                <option th:each="vivienda : ${viviendas}"
+                                        th:value="${vivienda.idVivienda}"
+                                        th:text="${vivienda.direccion}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="idResponsable" class="form-label">Responsable</label>
+                            <select id="idResponsable" name="idResponsable" class="form-select" required>
+                                <option value="">-- Seleccione un responsable --</option>
+                                <option th:each="responsable : ${responsables}"
+                                        th:value="${responsable.idResponsable}"
+                                        th:text="${responsable.nombreCompleto}">
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-between pt-2">
+                            <a th:href="@{/vivienda-responsable}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-link me-1"></i>Asociar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

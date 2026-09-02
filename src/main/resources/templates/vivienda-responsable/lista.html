@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <title>Asociaciones Vivienda - Responsable</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1 class="mt-4">Gestión de Asociaciones</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Asociaciones Viviendas y Responsables</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-list-alt me-1"></i>
+                Listado de Asociaciones
+            </div>
+            <a th:href="@{/vivienda-responsable/asociar}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i>Nueva Asociación
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-1"></i>
+                <span th:text="${mensajeExito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                <span th:text="${mensajeError}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- Tabla de Asociaciones -->
+            <table class="table table-striped table-bordered table-hover mt-2">
+                <thead class="table-dark">
+                <tr>
+                    <th>Vivienda (Dirección)</th>
+                    <th>Responsable</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="asociacion : ${asociaciones}">
+                    <td th:text="${asociacion.vivienda != null ? asociacion.vivienda.direccion : 'Sin dirección'}">Dirección</td>
+                    <td th:text="${asociacion.responsable != null ? asociacion.responsable.nombreCompleto : 'Sin responsable'}">Nombre del Responsable</td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(asociaciones)}">
+                    <td colspan="2" class="text-center text-muted py-3">
+                        No hay asociaciones registradas actualmente.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

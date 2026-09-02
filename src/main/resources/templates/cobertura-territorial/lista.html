@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <title>Cobertura Territorial</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <h1 class="mt-4">Gestión de Cobertura Territorial</h1>
+    <ol class="breadcrumb mb-4">
+        <li class="breadcrumb-item active">Cobertura Territorial de Campañas</li>
+    </ol>
+
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <div>
+                <i class="fas fa-map-marked-alt me-1"></i>
+                Listado de Coberturas Territoriales
+            </div>
+            <a th:href="@{/cobertura-territorial/nueva}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i>Nueva Cobertura
+            </a>
+        </div>
+        <div class="card-body">
+            <!-- Mensajes de alerta -->
+            <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-1"></i>
+                <span th:text="${mensajeExito}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-triangle me-1"></i>
+                <span th:text="${mensajeError}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+
+            <!-- Tabla de Coberturas -->
+            <table class="table table-striped table-bordered table-hover mt-2">
+                <thead class="table-dark">
+                <tr>
+                    <th>Campaña</th>
+                    <th>Colonia</th>
+                    <th style="width: 15%;" class="text-center">Acciones</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cobertura : ${coberturas}">
+                    <td th:text="${cobertura.campana != null ? cobertura.campana.nombre : 'Sin campaña'}">Nombre Campaña</td>
+                    <td th:text="${cobertura.colonia != null ? cobertura.colonia.nombre : 'Sin colonia'}">Nombre Colonia</td>
+                    <td class="text-center">
+                        <a th:href="@{/cobertura-territorial/eliminar/{id}(id=${cobertura.idCobertura})}"
+                           class="btn btn-danger btn-sm"
+                           onclick="return confirm('¿Está seguro de eliminar esta cobertura territorial?');"
+                           title="Eliminar">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </a>
+                    </td>
+                </tr>
+                <tr th:if="${#lists.isEmpty(coberturas)}">
+                    <td colspan="3" class="text-center text-muted py-3">
+                        No hay coberturas territoriales registradas actualmente.
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
