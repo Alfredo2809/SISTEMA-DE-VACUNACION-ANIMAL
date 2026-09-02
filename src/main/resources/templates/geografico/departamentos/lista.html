@@ -3,24 +3,24 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/_mainLayout}">
 <head>
-    <title>Colonias</title>
+    <title>Departamentos</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <h1 class="mt-4">Gestión de Colonias</h1>
+    <h1 class="mt-4">Gestión de Departamentos</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Mantenimiento de Colonias</li>
+        <li class="breadcrumb-item active">Mantenimiento de Departamentos</li>
     </ol>
 
     <div class="card mb-4">
         <div class="card-header d-flex justify-content-between align-items-center">
             <div>
-                <i class="fas fa-building me-1"></i>
-                Listado de Colonias
+                <i class="fas fa-map-marked-alt me-1"></i>
+                Listado de Departamentos
             </div>
-            <a th:href="@{/colonias/crear}" class="btn btn-primary btn-sm">
-                <i class="fas fa-plus me-1"></i>Nueva Colonia
+            <a th:href="@{/templates/geografico/departamentos/crear}" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus me-1"></i>Nuevo Departamento
             </a>
         </div>
         <div class="card-body">
@@ -37,38 +37,36 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
 
-
+            <!-- Tabla -->
             <table class="table table-striped table-bordered table-hover mt-2">
                 <thead class="table-dark">
                 <tr>
                     <th style="width: 10%;">ID</th>
-                    <th>Nombre de la Colonia</th>
-                    <th>Cantón</th>
+                    <th>Nombre del Departamento</th>
                     <th style="width: 20%;" class="text-center">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="col : ${colonias}">
-                    <td th:text="${col.idColonia}">1</td>
-                    <td th:text="${col.nombre}">Colonia Escalón</td>
-                    <td th:text="${col.canton != null ? col.canton.nombre : 'Sin asignación'}">El Carmen</td>
+                <tr th:each="dep : ${departamentos}">
+                    <td th:text="${dep.idDepartamento}">1</td>
+                    <td th:text="${dep.nombre}">San Salvador</td>
                     <td class="text-center">
-                        <a th:href="@{/colonias/editar/{id}(id=${col.idColonia})}"
+                        <a th:href="@{/templates/geografico/departamentos/editar/{id}(id=${dep.idDepartamento})}"
                            class="btn btn-warning btn-sm me-1"
                            title="Editar">
                             <i class="fas fa-edit"></i> Editar
                         </a>
-                        <a th:href="@{/colonias/eliminar/{id}(id=${col.idColonia})}"
+                        <a th:href="@{/templates/geografico/departamentos/eliminar/{id}(id=${dep.idDepartamento})}"
                            class="btn btn-danger btn-sm"
-                           onclick="return confirm('¿Está seguro de eliminar esta colonia?');"
+                           onclick="return confirm('¿Está seguro de eliminar este departamento?');"
                            title="Eliminar">
                             <i class="fas fa-trash"></i> Eliminar
                         </a>
                     </td>
                 </tr>
-                <tr th:if="${#lists.isEmpty(colonias)}">
-                    <td colspan="4" class="text-center text-muted py-3">
-                        No hay colonias registradas actualmente.
+                <tr th:if="${#lists.isEmpty(departamentos)}">
+                    <td colspan="3" class="text-center text-muted py-3">
+                        No hay departamentos registrados actualmente.
                     </td>
                 </tr>
                 </tbody>

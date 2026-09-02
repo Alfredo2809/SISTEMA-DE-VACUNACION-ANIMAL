@@ -3,14 +3,14 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/_mainLayout}">
 <head>
-    <title th:text="${titulo != null ? titulo : 'Formulario Municipio'}">Municipio</title>
+    <title th:text="${titulo != null ? titulo : 'Formulario Departamento'}">Departamento</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <h1 class="mt-4" th:text="${titulo != null ? titulo : 'Formulario de Municipio'}">Formulario</h1>
+    <h1 class="mt-4" th:text="${titulo != null ? titulo : 'Formulario de Departamento'}">Formulario</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a th:href="@{/municipios}">Municipios</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/templates/geografico/departamentos}">Departamentos</a></li>
         <li class="breadcrumb-item active">Formulario</li>
     </ol>
 
@@ -18,8 +18,8 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header">
-                    <i class="fas fa-city me-1"></i>
-                    Datos del Municipio
+                    <i class="fas fa-map-marked-alt me-1"></i>
+                    Datos del Departamento
                 </div>
                 <div class="card-body">
                     <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -28,36 +28,23 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-                    <!--/*@thymesVar id="municipio" type="org.esfe.vacunacion.modelos.Municipio"*/-->
-                    <form th:action="@{/municipios}" th:object="${municipio}" method="post">
-                        <!-- Campo oculto para el ID -->
-                        <input type="hidden" th:field="*{idMunicipio}" />
-
-
-                        <div class="mb-3">
-                            <label for="departamento" class="form-label">Departamento</label>
-                            <select id="departamento" class="form-select" th:field="*{departamento.idDepartamento}" required>
-                                <option value="">-- Seleccione un departamento --</option>
-                                <option th:each="dep : ${departamentos}"
-                                        th:value="${dep.idDepartamento}"
-                                        th:text="${dep.nombre}">
-                                </option>
-                            </select>
-                        </div>
-
+                    <!--/*@thymesVar id="departamento" type="org.esfe.vacunacion.modelos.Departamento"*/-->
+                    <form th:action="@{/templates/geografico/departamentos}" th:object="${departamento}" method="post">
+                        <!-- Clave primaria vinculada a idDepartamento -->
+                        <input type="hidden" th:field="*{idDepartamento}" />
 
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre del Municipio</label>
+                            <label for="nombre" class="form-label">Nombre del Departamento</label>
                             <input type="text"
                                    id="nombre"
                                    class="form-control"
                                    th:field="*{nombre}"
-                                   placeholder="Ingrese el nombre (Ej: Santa Tecla)"
+                                   placeholder="Ingrese el nombre (Ej: Ahuachapán)"
                                    required />
                         </div>
 
                         <div class="d-flex justify-content-between pt-2">
-                            <a th:href="@{/municipios}" class="btn btn-secondary">
+                            <a th:href="@{/templates/geografico/departamentos}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i>Cancelar
                             </a>
                             <button type="submit" class="btn btn-success">

@@ -3,14 +3,14 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{layouts/_mainLayout}">
 <head>
-    <title th:text="${titulo != null ? titulo : 'Formulario Departamento'}">Departamento</title>
+    <title th:text="${titulo != null ? titulo : 'Formulario Cantón'}">Cantón</title>
 </head>
 <body>
 
 <div layout:fragment="content">
-    <h1 class="mt-4" th:text="${titulo != null ? titulo : 'Formulario de Departamento'}">Formulario</h1>
+    <h1 class="mt-4" th:text="${titulo != null ? titulo : 'Formulario de Cantón'}">Formulario</h1>
     <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item"><a th:href="@{/departamentos}">Departamentos</a></li>
+        <li class="breadcrumb-item"><a th:href="@{/templates/geografico/cantones}">Cantones</a></li>
         <li class="breadcrumb-item active">Formulario</li>
     </ol>
 
@@ -18,8 +18,8 @@
         <div class="col-md-6">
             <div class="card mb-4">
                 <div class="card-header">
-                    <i class="fas fa-map-marked-alt me-1"></i>
-                    Datos del Departamento
+                    <i class="fas fa-tree me-1"></i>
+                    Datos del Cantón
                 </div>
                 <div class="card-body">
                     <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -28,23 +28,36 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-                    <!--/*@thymesVar id="departamento" type="org.esfe.vacunacion.modelos.Departamento"*/-->
-                    <form th:action="@{/departamentos}" th:object="${departamento}" method="post">
-                        <!-- Clave primaria vinculada a idDepartamento -->
-                        <input type="hidden" th:field="*{idDepartamento}" />
+                    <!--/*@thymesVar id="canton" type="org.esfe.vacunacion.modelos.Canton"*/-->
+                    <form th:action="@{/templates/geografico/cantones}" th:object="${canton}" method="post">
+                        <!-- Campo oculto para el ID -->
+                        <input type="hidden" th:field="*{idCanton}" />
+
 
                         <div class="mb-3">
-                            <label for="nombre" class="form-label">Nombre del Departamento</label>
+                            <label for="municipio" class="form-label">Municipio</label>
+                            <select id="municipio" class="form-select" th:field="*{municipio.idMunicipio}" required>
+                                <option value="">-- Seleccione un municipio --</option>
+                                <option th:each="mun : ${municipios}"
+                                        th:value="${mun.idMunicipio}"
+                                        th:text="${mun.nombre}">
+                                </option>
+                            </select>
+                        </div>
+
+
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label">Nombre del Cantón</label>
                             <input type="text"
                                    id="nombre"
                                    class="form-control"
                                    th:field="*{nombre}"
-                                   placeholder="Ingrese el nombre (Ej: Ahuachapán)"
+                                   placeholder="Ingrese el nombre (Ej: El Carmen)"
                                    required />
                         </div>
 
                         <div class="d-flex justify-content-between pt-2">
-                            <a th:href="@{/departamentos}" class="btn btn-secondary">
+                            <a th:href="@{/templates/geografico/cantones}" class="btn btn-secondary">
                                 <i class="fas fa-arrow-left me-1"></i>Cancelar
                             </a>
                             <button type="submit" class="btn btn-success">
