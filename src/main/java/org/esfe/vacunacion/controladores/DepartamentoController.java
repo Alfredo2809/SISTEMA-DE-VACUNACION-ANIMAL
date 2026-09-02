@@ -21,46 +21,41 @@ public class DepartamentoController {
     private IDepartamentoService departamentoService;
 
 
+
     @GetMapping
     public String listar(Model model) {
-        model.addAttribute("departamentos", departamentoService.obtenerTodos());
-        return "geografico/departamentos/lista";
+        List<Departamento> departamentos = departamentoService.obtenerTodos();
+        model.addAttribute("departamentos", departamentos);
+        return "departamentos/lista";
     }
 
     @GetMapping("/crear")
     public String formularioCrear(Model model) {
         model.addAttribute("departamento", new Departamento());
-        model.addAttribute("titulo", "Nuevo Departamento");
-        return "geografico/departamentos/formulario";
+        return "departamentos/formulario";
     }
 
     @GetMapping("/editar/{id}")
-    public String formularioEditar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+    public String formularioEditar(@PathVariable Long id, Model model) {
         Optional<Departamento> departamento = departamentoService.obtenerPorId(id);
         if (departamento.isPresent()) {
             model.addAttribute("departamento", departamento.get());
-            model.addAttribute("titulo", "Editar Departamento");
-            return "geografico/departamentos/formulario";
+            return "departamentos/formulario";
         }
-        redirectAttributes.addFlashAttribute("mensajeError", "El departamento especificado no existe.");
         return "redirect:/departamentos";
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute Departamento departamento, RedirectAttributes redirectAttributes) {
+    public String guardar(@ModelAttribute Departamento departamento,
+                          RedirectAttributes redirectAttributes) {
         try {
             departamentoService.guardar(departamento);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Departamento guardado exitosamente");
+            redirectAttributes.addFlashAttribute("mensajeExito",
+                    "Departamento guardado exitosamente");
             return "redirect:/departamentos";
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-            if (departamento.getIdDepartamento() != null) {
-                return "redirect:/departamentos/editar/" + departamento.getIdDepartamento();
-            }
             return "redirect:/departamentos/crear";
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error interno al procesar el departamento.");
-            return "redirect:/departamentos";
         }
     }
 
@@ -68,25 +63,25 @@ public class DepartamentoController {
     public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         try {
             departamentoService.eliminar(id);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Departamento eliminado correctamente");
+            redirectAttributes.addFlashAttribute("mensajeExito",
+                    "Departamento eliminado correctamente");
         } catch (IllegalArgumentException e) {
             redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "No se puede eliminar el departamento porque posee municipios vinculados.");
         }
         return "redirect:/departamentos";
     }
 
+    // ===== API REST (JSON) =====
 
     @GetMapping("/api")
     @ResponseBody
-    public ResponseEntity<List<Departamento>> obtenerTodosAPI() {
+    public ResponseEntity<List<Departamento>> obtenerTodos() {
         return ResponseEntity.ok(departamentoService.obtenerTodos());
     }
 
     @GetMapping("/api/{id}")
     @ResponseBody
-    public ResponseEntity<Departamento> obtenerPorIdAPI(@PathVariable Long id) {
+    public ResponseEntity<Departamento> obtenerPorId(@PathVariable Long id) {
         return departamentoService.obtenerPorId(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
