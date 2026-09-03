@@ -34,7 +34,7 @@ public class MascotaController {
     public String listar(Model model) {
         model.addAttribute("mascotas", mascotaService.obtenerTodas());
         cargarSelectoresEspecieYEstado(model);
-        return "mascotas/lista";
+        return "Mascotas/Lista";
     }
 
     // ---------- Creación ----------
@@ -42,12 +42,11 @@ public class MascotaController {
     @GetMapping("/crear")
     public String mostrarFormularioCreacion(Model model) {
         Mascota mascota = new Mascota();
-        // Placeholders para evitar NPE al enlazar responsable.idResponsable / vivienda.idVivienda en el form
         mascota.setResponsable(new Responsable());
         mascota.setVivienda(new Vivienda());
         model.addAttribute("mascota", mascota);
         cargarDatosFormulario(model);
-        return "mascotas/formulario";
+        return "Mascotas/Formulario";
     }
 
     @PostMapping("/crear")
@@ -58,7 +57,7 @@ public class MascotaController {
         } catch (Exception e) {
             model.addAttribute("error", "No se pudo crear la mascota: " + e.getMessage());
             cargarDatosFormulario(model);
-            return "mascotas/formulario";
+            return "Mascotas/Formulario";
         }
     }
 
@@ -72,7 +71,7 @@ public class MascotaController {
         }
         model.addAttribute("mascota", mascotaOpt.get());
         cargarDatosFormulario(model);
-        return "mascotas/formulario";
+        return "Mascotas/Formulario";
     }
 
     @PostMapping("/editar/{id}")
@@ -84,11 +83,11 @@ public class MascotaController {
         } catch (Exception e) {
             model.addAttribute("error", "No se pudo actualizar la mascota: " + e.getMessage());
             cargarDatosFormulario(model);
-            return "mascotas/formulario";
+            return "Mascotas/Formulario";
         }
     }
 
-    // ---------- Cambio rápido de estado (acción independiente, desde la tabla) ----------
+    // ---------- Cambio rápido de estado ----------
 
     @PostMapping("/{id}/cambiar-estado")
     public String cambiarEstado(@PathVariable Long id, @RequestParam EstadoMascota nuevoEstado) {
@@ -103,8 +102,6 @@ public class MascotaController {
         mascotaService.eliminarPorId(id);
         return "redirect:/mascotas";
     }
-
-
 
     private void cargarDatosFormulario(Model model) {
         model.addAttribute("responsables", responsableService.listarTodos());

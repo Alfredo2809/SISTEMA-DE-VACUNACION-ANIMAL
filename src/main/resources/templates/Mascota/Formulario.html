@@ -14,9 +14,9 @@
         <li class="breadcrumb-item active" th:text="${mascota.idMascota} != null ? 'Editar' : 'Crear'">Formulario</li>
     </ol>
 
-    <div class="card mb-4">
-        <div class="card-header">
-            <i class="fas fa-paw"></i>
+    <div class="card mb-4 border-0 shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <i class="fas fa-paw me-1"></i>
             <span th:text="${mascota.idMascota} != null ? ' Editar Mascota' : ' Crear Mascota'"></span>
         </div>
         <div class="card-body">
@@ -29,14 +29,14 @@
                   th:object="${mascota}" method="post">
 
                 <div class="mb-3">
-                    <label for="nombre" class="form-label">Nombre</label>
+                    <label for="nombre" class="form-label fw-semibold">Nombre</label>
                     <input type="text" class="form-control" id="nombre"
                            th:field="*{nombre}" required maxlength="100"/>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="especie" class="form-label">Especie</label>
+                        <label for="especie" class="form-label fw-semibold">Especie</label>
                         <select class="form-select" id="especie" th:field="*{especie}" required>
                             <option value="">-- Selecciona una especie --</option>
                             <option th:each="e : ${especies}" th:value="${e}" th:text="${e}"></option>
@@ -44,7 +44,7 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="estado" class="form-label">Estado</label>
+                        <label for="estado" class="form-label fw-semibold">Estado</label>
                         <select class="form-select" id="estado" th:field="*{estado}" required>
                             <option value="">-- Selecciona un estado --</option>
                             <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"></option>
@@ -54,21 +54,21 @@
 
                 <div class="row">
                     <div class="col-md-6 mb-3">
-                        <label for="fechaNacimiento" class="form-label">Fecha de nacimiento</label>
+                        <label for="fechaNacimiento" class="form-label fw-semibold">Fecha de nacimiento</label>
                         <input type="date" class="form-control" id="fechaNacimiento"
                                th:field="*{fechaNacimiento}" required/>
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="edadAproximadaMeses" class="form-label">Edad aproximada (meses)</label>
+                        <label for="edadAproximadaMeses" class="form-label fw-semibold">Edad aproximada (meses)</label>
                         <input type="number" class="form-control" id="edadAproximadaMeses"
                                th:field="*{edadAproximadaMeses}" required min="0"/>
                     </div>
                 </div>
 
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-md-6 mb-3">
-                        <label for="responsable" class="form-label">Responsable</label>
+                        <label for="responsable" class="form-label fw-semibold">Responsable</label>
                         <select class="form-select" id="responsable" name="responsable.idResponsable" required>
                             <option value="">-- Selecciona un responsable --</option>
                             <option th:each="r : ${responsables}" th:value="${r.idResponsable}" th:text="${r.nombreCompleto}"
@@ -77,7 +77,7 @@
                     </div>
 
                     <div class="col-md-6 mb-3">
-                        <label for="vivienda" class="form-label">Vivienda</label>
+                        <label for="vivienda" class="form-label fw-semibold">Vivienda</label>
                         <select class="form-select" id="vivienda" name="vivienda.idVivienda" required>
                             <option value="">-- Selecciona una vivienda --</option>
                             <option th:each="v : ${viviendas}" th:value="${v.idVivienda}" th:text="${v.direccion}"
@@ -86,12 +86,14 @@
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-save"></i> Guardar
-                </button>
-                <a th:href="@{/mascotas}" class="btn btn-secondary">
-                    <i class="fas fa-times"></i> Cancelar
-                </a>
+                <div class="d-flex justify-content-between pt-3 border-top">
+                    <a th:href="@{/mascotas}" class="btn btn-secondary">
+                        <i class="fas fa-times me-1"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-save me-1"></i> Guardar
+                    </button>
+                </div>
             </form>
 
         </div>

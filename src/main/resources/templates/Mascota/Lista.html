@@ -8,58 +8,60 @@
 <body>
 <div layout:fragment="content">
 
-  <h2 class="mt-4">Mascotas</h2>
+  <div class="d-flex justify-content-between align-items-center mt-4 mb-3">
+    <h2>Mascotas</h2>
+    <a th:href="@{/mascotas/crear}" class="btn btn-primary">
+      <i class="fas fa-plus me-1"></i> Nueva mascota
+    </a>
+  </div>
+
   <ol class="breadcrumb mb-4">
     <li class="breadcrumb-item active">Tabla de Mascotas</li>
   </ol>
 
-  <div class="card mb-4">
-    <div class="card-header d-flex justify-content-between align-items-center">
-      <span><i class="fas fa-paw"></i> Tabla de Mascotas</span>
-      <a th:href="@{/mascotas/crear}" class="btn btn-primary btn-sm">
-        <i class="fas fa-plus"></i> Nueva mascota
-      </a>
+  <div class="card mb-4 border-0 shadow-sm">
+    <div class="card-header bg-dark text-white">
+      <i class="fas fa-paw me-1"></i> Tabla de Mascotas
     </div>
-    <div class="card-body">
+    <div class="card-body p-0">
 
       <div class="table-responsive">
-        <table class="table table-bordered table-striped" width="100%" cellspacing="0">
-          <thead>
+        <table class="table table-striped table-hover align-middle mb-0">
+          <thead class="table-dark">
           <tr>
             <th>Nombre</th>
             <th>Especie</th>
-            <th>Fecha nacimiento</th>
+            <th>Fecha Nacimiento</th>
             <th>Edad (meses)</th>
             <th>Estado</th>
             <th>Responsable</th>
             <th>Vivienda</th>
-            <th>Acciones</th>
+            <th class="text-center">Acciones</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="m : ${mascotas}">
             <td th:text="${m.nombre}"></td>
             <td th:text="${m.especie}"></td>
-            <td th:text="${m.fechaNacimiento}"></td>
+            <td th:text="${#temporals.format(m.fechaNacimiento, 'dd/MM/yyyy')}"></td>
             <td th:text="${m.edadAproximadaMeses}"></td>
-            <td th:text="${m.estado}"></td>
-            <td th:text="${m.responsable != null} ? ${m.responsable.nombreCompleto} : '-'"></td>
-            <td th:text="${m.vivienda != null} ? ${m.vivienda.direccion} : '-'"></td>
             <td>
-              <a th:href="@{/mascotas/editar/{id}(id=${m.idMascota})}"
-                 class="btn btn-sm btn-warning" title="Editar">
-                <i class="fas fa-edit"></i>
-              </a>
-
-              <!-- Cambio rápido de estado -->
               <form th:action="@{/mascotas/{id}/cambiar-estado(id=${m.idMascota})}"
                     method="post" class="d-inline-block">
-                <select name="nuevoEstado" class="form-select form-select-sm d-inline-block w-auto"
+                <select name="nuevoEstado" class="form-select form-select-sm"
                         onchange="this.form.submit()">
                   <option th:each="e : ${estados}" th:value="${e}" th:text="${e}"
                           th:selected="${e} == ${m.estado}"></option>
                 </select>
               </form>
+            </td>
+            <td th:text="${m.responsable != null} ? ${m.responsable.nombreCompleto} : '-'"></td>
+            <td th:text="${m.vivienda != null} ? ${m.vivienda.direccion} : '-'"></td>
+            <td class="text-center">
+              <a th:href="@{/mascotas/editar/{id}(id=${m.idMascota})}"
+                 class="btn btn-sm btn-warning me-1" title="Editar">
+                <i class="fas fa-edit"></i>
+              </a>
 
               <form th:action="@{/mascotas/eliminar/{id}(id=${m.idMascota})}"
                     method="post" class="d-inline-block"
@@ -69,6 +71,9 @@
                 </button>
               </form>
             </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(mascotas)}">
+            <td colspan="8" class="text-center text-muted py-4">No se encontraron mascotas registradas.</td>
           </tr>
           </tbody>
         </table>
