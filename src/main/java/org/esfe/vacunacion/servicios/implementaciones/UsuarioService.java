@@ -6,18 +6,31 @@ import org.esfe.vacunacion.modelos.Usuario;
 import org.esfe.vacunacion.repositorios.IUsuarioRepository;
 import org.esfe.vacunacion.servicios.interfaces.IUsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 
 @Service
+@Transactional
 public class UsuarioService implements IUsuarioService {
 
     @Autowired
     private IUsuarioRepository usuarioRepository;
+
+    @Autowired
+    @Lazy
+    private PasswordEncoder passwordEncoder;
+
+    @Override
+    public long contarUsuarios() {
+        return usuarioRepository.count();
+    }
 
     @Override
     public List<Usuario> obtenerTodos() {
@@ -51,8 +64,10 @@ public class UsuarioService implements IUsuarioService {
 
     @Override
     public Usuario guardar(Usuario usuario) {
-        if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()) {
-            usuario.setContrasena(usuario.getContrasena());
+        // Encriptar contraseña únicamente si viene nueva o fue modificada
+        if (usuario.getContrasena() != null && !usuario.getContrasena().isEmpty()
+                && !usuario.getContrasena().startsWith("$2a$")) {
+            usuario.setContrasena(passwordEncoder.encode(usuario.getContrasena()));
         }
         return usuarioRepository.save(usuario);
     }
@@ -67,7 +82,7 @@ public class UsuarioService implements IUsuarioService {
         Optional<Usuario> usuarioOpt = usuarioRepository.findByCorreo(correo);
         if (usuarioOpt.isPresent()) {
             Usuario usuario = usuarioOpt.get();
-            if (usuario.getContrasena() != null && usuario.getContrasena().equals(contrasena)) {
+            if (passwordEncoder.matches(contrasena, usuario.getContrasena())) {
                 return usuario;
             }
         }

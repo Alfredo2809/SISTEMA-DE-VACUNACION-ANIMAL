@@ -11,6 +11,8 @@ import java.util.Optional;
 
 public interface IUsuarioService {
 
+    long contarUsuarios();
+
     List<Usuario> obtenerTodos();
 
     Page<Usuario> obtenerTodosPaginado(Pageable pageable);

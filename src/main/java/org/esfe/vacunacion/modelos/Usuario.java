@@ -1,6 +1,7 @@
 package org.esfe.vacunacion.modelos;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "usuarios")
@@ -10,14 +11,12 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idUsuario;
 
-    // Ajustado a length = 150 según el diagrama
     @Column(nullable = false, length = 150)
     private String nombreCompleto;
 
     @Column(nullable = false, unique = true, length = 100)
     private String correo;
 
-    // Explicitado length = 255 según el diagrama
     @Column(nullable = false, length = 255)
     private String contrasena;
 
@@ -29,8 +28,28 @@ public class Usuario {
     @Column(nullable = false)
     private EstadoUsuario estado;
 
+    // --- AGREGAR ESTOS CAMPOS DE FECHAS ---
+    @Column(name = "fecha_creacion", updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
+
     public Usuario() {}
 
+    // Asigna automáticamente las fechas antes de guardar en la BD
+    @PrePersist
+    public void prePersist() {
+        this.fechaCreacion = LocalDateTime.now();
+        this.fechaActualizacion = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    public void preUpdate() {
+        this.fechaActualizacion = LocalDateTime.now();
+    }
+
+    // --- GETTERS Y SETTERS ---
     public Long getIdUsuario() { return idUsuario; }
     public void setIdUsuario(Long idUsuario) { this.idUsuario = idUsuario; }
 
@@ -48,4 +67,10 @@ public class Usuario {
 
     public EstadoUsuario getEstado() { return estado; }
     public void setEstado(EstadoUsuario estado) { this.estado = estado; }
+
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
 }
