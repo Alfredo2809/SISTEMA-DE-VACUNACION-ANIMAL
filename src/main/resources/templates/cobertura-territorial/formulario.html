@@ -31,26 +31,37 @@
                     <!--/*@thymesVar id="cobertura" type="org.esfe.vacunacion.modelos.CoberturaTerritorial"*/-->
                     <form th:action="@{/cobertura-territorial/guardar}" th:object="${cobertura}" method="post">
 
+                        <!-- Campo oculto para el ID -->
+                        <input type="hidden" th:field="*{idCobertura}" />
+
                         <div class="mb-3">
                             <label for="campana" class="form-label">Campaña</label>
-                            <select id="campana" class="form-select" th:field="*{campana.idCampana}" required>
+                            <select id="campana"
+                                    class="form-select"
+                                    th:field="*{campana.idCampana}"
+                                    th:errorclass="is-invalid">
                                 <option value="">-- Seleccione una campaña --</option>
                                 <option th:each="campana : ${campanas}"
                                         th:value="${campana.idCampana}"
                                         th:text="${campana.nombre}">
                                 </option>
                             </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('campana')}" th:errors="*{campana}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="colonia" class="form-label">Colonia</label>
-                            <select id="colonia" class="form-select" th:field="*{colonia.idColonia}" required>
+                            <select id="colonia"
+                                    class="form-select"
+                                    th:field="*{colonia.idColonia}"
+                                    th:errorclass="is-invalid">
                                 <option value="">-- Seleccione una colonia --</option>
                                 <option th:each="colonia : ${colonias}"
                                         th:value="${colonia.idColonia}"
                                         th:text="${colonia.nombre}">
                                 </option>
                             </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('colonia')}" th:errors="*{colonia}"></div>
                         </div>
 
                         <div class="d-flex justify-content-between pt-2">

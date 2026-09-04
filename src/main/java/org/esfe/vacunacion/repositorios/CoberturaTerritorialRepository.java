@@ -10,4 +10,6 @@ public interface CoberturaTerritorialRepository extends JpaRepository<CoberturaT
 
     @Query("SELECT c FROM CoberturaTerritorial c WHERE c.campana.idCampana = :idCampana")
     List<CoberturaTerritorial> listarPorCampana(@Param("idCampana") Long idCampana);
+
+    boolean existsByCampana_IdCampanaAndColonia_IdColonia(Long idCampana, Long idColonia);
 }

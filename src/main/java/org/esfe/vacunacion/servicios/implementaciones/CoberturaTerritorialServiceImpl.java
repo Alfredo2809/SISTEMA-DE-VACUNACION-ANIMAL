@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 /**
  * Implementacion del servicio de CoberturaTerritorial.
  */
@@ -39,5 +40,13 @@ public class CoberturaTerritorialServiceImpl implements ICoberturaTerritorialSer
     @Override
     public List<CoberturaTerritorial> listarPorCampana(Long idCampana) {
         return coberturaTerritorialRepository.listarPorCampana(idCampana);
+    }
+
+    @Override
+    public boolean existeAsignacion(Long idCampana, Long idColonia) {
+        if (idCampana == null || idColonia == null) {
+            return false;
+        }
+        return coberturaTerritorialRepository.existsByCampana_IdCampanaAndColonia_IdColonia(idCampana, idColonia);
     }
 }

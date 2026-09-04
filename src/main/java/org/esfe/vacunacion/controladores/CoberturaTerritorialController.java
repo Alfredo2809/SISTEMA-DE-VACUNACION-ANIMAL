@@ -1,12 +1,14 @@
 package org.esfe.vacunacion.controladores;
 
+import jakarta.validation.Valid;
 import org.esfe.vacunacion.modelos.CoberturaTerritorial;
 import org.esfe.vacunacion.servicios.interfaces.ICampanaVacunacionService;
-import org.esfe.vacunacion.servicios.interfaces.IColoniaService;
 import org.esfe.vacunacion.servicios.interfaces.ICoberturaTerritorialService;
+import org.esfe.vacunacion.servicios.interfaces.IColoniaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +37,7 @@ public class CoberturaTerritorialController {
 
     @GetMapping("/nueva")
     public String mostrarFormulario(Model model) {
+        model.addAttribute("titulo", "Registrar Cobertura Territorial");
         model.addAttribute("cobertura", new CoberturaTerritorial());
         model.addAttribute("campanas", campanaVacunacionService.listar());
         model.addAttribute("colonias", coloniaService.obtenerTodos());
@@ -42,7 +45,34 @@ public class CoberturaTerritorialController {
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute("cobertura") CoberturaTerritorial cobertura, RedirectAttributes redirectAttributes) {
+    public String guardar(@Valid @ModelAttribute("cobertura") CoberturaTerritorial cobertura,
+                          BindingResult result,
+                          Model model,
+                          RedirectAttributes redirectAttributes) {
+
+        // 1. Validar si ya existe la asignación Campaña-Colonia para registros nuevos
+        if (cobertura.getIdCobertura() == null &&
+                cobertura.getCampana() != null && cobertura.getCampana().getIdCampana() != null &&
+                cobertura.getColonia() != null && cobertura.getColonia().getIdColonia() != null) {
+
+            boolean duplicado = coberturaTerritorialService.existeAsignacion(
+                    cobertura.getCampana().getIdCampana(),
+                    cobertura.getColonia().getIdColonia()
+            );
+
+            if (duplicado) {
+                result.rejectValue("colonia", "error.cobertura", "Esta colonia ya se encuentra asignada a la campaña seleccionada.");
+            }
+        }
+
+        // 2. Si hay errores de validación, recargar los selectores
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", "Registrar Cobertura Territorial");
+            model.addAttribute("campanas", campanaVacunacionService.listar());
+            model.addAttribute("colonias", coloniaService.obtenerTodos());
+            return "cobertura-territorial/formulario";
+        }
+
         coberturaTerritorialService.guardar(cobertura);
         redirectAttributes.addFlashAttribute("mensajeExito", "Cobertura territorial registrada correctamente.");
         return "redirect:/cobertura-territorial";
