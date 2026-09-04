@@ -3,6 +3,8 @@ package org.esfe.vacunacion.controladores;
 import org.esfe.vacunacion.modelos.Departamento;
 import org.esfe.vacunacion.servicios.interfaces.IDepartamentoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -21,8 +23,15 @@ public class DepartamentoController {
     private IDepartamentoService departamentoService;
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("departamentos", departamentoService.obtenerTodos());
+    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
+
+        Page<Departamento> departamentoPage = departamentoService.obtenerPaginados(PageRequest.of(page, 4));
+
+        model.addAttribute("departamentos", departamentoPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", departamentoPage.getTotalPages());
+        model.addAttribute("totalItems", departamentoPage.getTotalElements());
+
         return "geografico/departamentos/lista";
     }
 
@@ -57,20 +66,21 @@ public class DepartamentoController {
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute Departamento departamento, RedirectAttributes redirectAttributes) {
+    public String guardar(@ModelAttribute Departamento departamento, Model model, RedirectAttributes redirectAttributes) {
         try {
             departamentoService.guardar(departamento);
             redirectAttributes.addFlashAttribute("mensajeExito", "Departamento guardado exitosamente");
             return "redirect:/geografico/departamentos";
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-            if (departamento.getIdDepartamento() != null) {
-                return "redirect:/geografico/departamentos/editar/" + departamento.getIdDepartamento();
-            }
-            return "redirect:/geografico/departamentos/crear";
+            model.addAttribute("mensajeError", e.getMessage());
+            model.addAttribute("departamento", departamento);
+            model.addAttribute("titulo", departamento.getIdDepartamento() != null ? "Editar Departamento" : "Nuevo Departamento");
+            return "geografico/departamentos/formulario";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error interno al procesar el departamento.");
-            return "redirect:/geografico/departamentos";
+            model.addAttribute("mensajeError", "Error interno al procesar el departamento.");
+            model.addAttribute("departamento", departamento);
+            model.addAttribute("titulo", departamento.getIdDepartamento() != null ? "Editar Departamento" : "Nuevo Departamento");
+            return "geografico/departamentos/formulario";
         }
     }
 
@@ -87,7 +97,7 @@ public class DepartamentoController {
         return "redirect:/geografico/departamentos";
     }
 
-    // --- MÉTODOS API REST ---
+
     @GetMapping("/api")
     @ResponseBody
     public ResponseEntity<List<Departamento>> obtenerTodosAPI() {
@@ -104,12 +114,12 @@ public class DepartamentoController {
 
     @PostMapping("/api")
     @ResponseBody
-    public ResponseEntity<Departamento> crearAPI(@RequestBody Departamento departamento) {
+    public ResponseEntity<?> crearAPI(@RequestBody Departamento departamento) {
         try {
             Departamento guardado = departamentoService.guardar(departamento);
             return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

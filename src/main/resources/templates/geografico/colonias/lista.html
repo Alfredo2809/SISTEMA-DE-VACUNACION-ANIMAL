@@ -13,7 +13,7 @@
         <a th:href="@{/geografico/colonias/crear}" class="btn btn-primary">+ Nueva Colonia</a>
     </div>
 
-    <!-- Alertas -->
+
     <div th:if="${mensajeExito}" class="alert alert-success alert-dismissible fade show" role="alert">
         <span th:text="${mensajeExito}"></span>
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -23,9 +23,9 @@
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
 
-    <!-- Tabla -->
-    <div class="card shadow-sm">
-        <div class="card-body">
+
+    <div class="card shadow-sm mb-4">
+        <div class="card-body p-0">
             <table class="table table-striped table-hover mb-0">
                 <thead class="table-dark">
                 <tr>
@@ -41,18 +41,39 @@
                     <td th:text="${col.nombre}">Col. Escalón</td>
                     <td th:text="${col.canton != null ? col.canton.nombre : 'Sin asignación'}">El Carmen</td>
                     <td class="text-center">
-                        <a th:href="@{/geografico/colonias/detalles/{id}(id=${col.idColonia})}" class="btn btn-info btn-sm">Detalles</a>
-                        <a th:href="@{/geografico/colonias/editar/{id}(id=${col.idColonia})}" class="btn btn-warning btn-sm">Editar</a>
+                        <a th:href="@{/geografico/colonias/detalles/{id}(id=${col.idColonia})}" class="btn btn-info btn-sm text-white">Detalles</a>
+                        <a th:href="@{/geografico/colonias/editar/{id}(id=${col.idColonia})}" class="btn btn-warning btn-sm text-white">Editar</a>
                         <a th:href="@{/geografico/colonias/eliminar/{id}(id=${col.idColonia})}"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('¿Está seguro de eliminar esta colonia?');">Eliminar</a>
                     </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(colonias)}">
-                    <td colspan="4" class="text-center text-muted">No hay colonias registradas.</td>
+                    <td colspan="4" class="text-center text-muted py-3">No hay colonias registradas.</td>
                 </tr>
                 </tbody>
             </table>
+        </div>
+
+
+        <div th:if="${totalPages > 1}" class="card-footer d-flex justify-content-between align-items-center bg-white border-top py-2">
+            <div>
+                <small class="text-muted" th:text="'Página ' + (${currentPage} + 1) + ' de ' + ${totalPages} + ' (Total: ' + ${totalItems} + ')'"></small>
+            </div>
+            <nav aria-label="Navegación de páginas">
+                <ul class="pagination pagination-sm mb-0">
+                    <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled'">
+                        <a class="page-link" th:href="@{/geografico/colonias(page=${currentPage - 1})}">Anterior</a>
+                    </li>
+                    <li class="page-item" th:each="i : ${#numbers.sequence(0, totalPages - 1)}"
+                        th:classappend="${i == currentPage} ? 'active'">
+                        <a class="page-link" th:href="@{/geografico/colonias(page=${i})}" th:text="${i + 1}">1</a>
+                    </li>
+                    <li class="page-item" th:classappend="${currentPage + 1 == totalPages} ? 'disabled'">
+                        <a class="page-link" th:href="@{/geografico/colonias(page=${currentPage + 1})}">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

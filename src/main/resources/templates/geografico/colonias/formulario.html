@@ -9,6 +9,13 @@
 
 <div layout:fragment="content">
     <div class="container mt-4" style="max-width: 600px;">
+
+
+        <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${mensajeError}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0" th:text="${titulo}">Formulario Colonia</h4>
@@ -18,13 +25,13 @@
                     <input type="hidden" th:field="*{idColonia}">
 
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre de la Colonia</label>
-                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required placeholder="Ej. Las Margaritas">
+                        <label for="nombre" class="form-label fw-bold">Nombre de la Colonia</label>
+                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" placeholder="Ej. Las Margaritas">
                     </div>
 
                     <div class="mb-3">
-                        <label for="canton" class="form-label">Cantón</label>
-                        <select class="form-select" id="canton" th:field="*{canton}" required>
+                        <label for="canton" class="form-label fw-bold">Cantón</label>
+                        <select class="form-select" id="canton" th:field="*{canton.idCanton}">
                             <option value="">-- Seleccionar Cantón --</option>
                             <option th:each="c : ${cantones}"
                                     th:value="${c.idCanton}"

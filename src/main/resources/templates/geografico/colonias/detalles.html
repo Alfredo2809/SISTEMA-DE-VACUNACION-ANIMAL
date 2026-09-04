@@ -14,24 +14,38 @@
                 <h4 class="mb-0">Detalles de la Colonia</h4>
             </div>
             <div class="card-body">
-                <ul class="list-group list-group-flush">
+                <h5 class="card-title text-secondary border-bottom pb-2">Información General</h5>
+                <ul class="list-group list-group-flush mb-3">
                     <li class="list-group-item">
-                        <strong>ID:</strong>
+                        <strong>ID Colonia:</strong>
                         <span th:text="${colonia.idColonia}">1</span>
                     </li>
                     <li class="list-group-item">
-                        <strong>Nombre:</strong>
+                        <strong>Nombre Colonia:</strong>
                         <span th:text="${colonia.nombre}">Col. Escalón</span>
                     </li>
+                </ul>
+
+
+                <h5 class="card-title text-secondary border-bottom pb-2">Jerarquía Territorial</h5>
+                <ul class="list-group list-group-flush">
                     <li class="list-group-item">
                         <strong>Cantón:</strong>
                         <span th:text="${colonia.canton != null ? colonia.canton.nombre : 'N/A'}">El Carmen</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Municipio:</strong>
+                        <span th:text="${colonia.canton != null && colonia.canton.municipio != null ? colonia.canton.municipio.nombre : 'N/A'}">San Salvador Centro</span>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Departamento:</strong>
+                        <span th:text="${colonia.canton != null && colonia.canton.municipio != null && colonia.canton.municipio.departamento != null ? colonia.canton.municipio.departamento.nombre : 'N/A'}">San Salvador</span>
                     </li>
                 </ul>
             </div>
             <div class="card-footer d-flex justify-content-between">
                 <a th:href="@{/geografico/colonias}" class="btn btn-secondary">Volver</a>
-                <a th:href="@{/geografico/colonias/editar/{id}(id=${colonia.idColonia})}" class="btn btn-warning">Editar</a>
+                <a th:href="@{/geografico/colonias/editar/{id}(id=${colonia.idColonia})}" class="btn btn-warning text-white">Editar</a>
             </div>
         </div>
     </div>

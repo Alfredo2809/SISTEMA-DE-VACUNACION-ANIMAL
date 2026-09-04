@@ -9,6 +9,13 @@
 
 <div layout:fragment="content">
     <div class="container mt-4" style="max-width: 600px;">
+
+
+        <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${mensajeError}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0" th:text="${titulo}">Formulario Cantón</h4>
@@ -18,13 +25,13 @@
                     <input type="hidden" th:field="*{idCanton}">
 
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre del Cantón</label>
-                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required placeholder="Ej. San Bartolo">
+                        <label for="nombre" class="form-label fw-bold">Nombre del Cantón</label>
+                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" placeholder="Ej. San Bartolo">
                     </div>
 
                     <div class="mb-3">
-                        <label for="municipio" class="form-label">Municipio</label>
-                        <select class="form-select" id="municipio" th:field="*{municipio}" required>
+                        <label for="municipio" class="form-label fw-bold">Municipio</label>
+                        <select class="form-select" id="municipio" th:field="*{municipio.idMunicipio}">
                             <option value="">-- Seleccionar Municipio --</option>
                             <option th:each="m : ${municipios}"
                                     th:value="${m.idMunicipio}"

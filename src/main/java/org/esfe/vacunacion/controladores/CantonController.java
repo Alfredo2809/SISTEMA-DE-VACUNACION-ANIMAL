@@ -4,6 +4,8 @@ import org.esfe.vacunacion.modelos.Canton;
 import org.esfe.vacunacion.servicios.interfaces.ICantonService;
 import org.esfe.vacunacion.servicios.interfaces.IMunicipioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,8 +27,15 @@ public class CantonController {
     private IMunicipioService municipioService;
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("cantones", cantonService.obtenerTodos());
+    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
+
+        Page<Canton> cantonPage = cantonService.obtenerPaginados(PageRequest.of(page, 4));
+
+        model.addAttribute("cantones", cantonPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", cantonPage.getTotalPages());
+        model.addAttribute("totalItems", cantonPage.getTotalElements());
+
         return "geografico/cantones/lista";
     }
 
@@ -63,20 +72,23 @@ public class CantonController {
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute Canton canton, RedirectAttributes redirectAttributes) {
+    public String guardar(@ModelAttribute Canton canton, Model model, RedirectAttributes redirectAttributes) {
         try {
             cantonService.guardar(canton);
             redirectAttributes.addFlashAttribute("mensajeExito", "Cantón guardado exitosamente");
             return "redirect:/geografico/cantones";
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-            if (canton.getIdCanton() != null) {
-                return "redirect:/geografico/cantones/editar/" + canton.getIdCanton();
-            }
-            return "redirect:/geografico/cantones/crear";
+            model.addAttribute("mensajeError", e.getMessage());
+            model.addAttribute("canton", canton);
+            model.addAttribute("municipios", municipioService.obtenerTodos());
+            model.addAttribute("titulo", canton.getIdCanton() != null ? "Editar Cantón" : "Nuevo Cantón");
+            return "geografico/cantones/formulario";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error interno al procesar el cantón.");
-            return "redirect:/geografico/cantones";
+            model.addAttribute("mensajeError", "Error interno al procesar el cantón.");
+            model.addAttribute("canton", canton);
+            model.addAttribute("municipios", municipioService.obtenerTodos());
+            model.addAttribute("titulo", canton.getIdCanton() != null ? "Editar Cantón" : "Nuevo Cantón");
+            return "geografico/cantones/formulario";
         }
     }
 
@@ -93,7 +105,7 @@ public class CantonController {
         return "redirect:/geografico/cantones";
     }
 
-    // --- MÉTODOS API REST ---
+
     @GetMapping("/api")
     @ResponseBody
     public ResponseEntity<List<Canton>> obtenerTodosAPI() {
@@ -110,12 +122,12 @@ public class CantonController {
 
     @PostMapping("/api")
     @ResponseBody
-    public ResponseEntity<Canton> crearAPI(@RequestBody Canton canton) {
+    public ResponseEntity<?> crearAPI(@RequestBody Canton canton) {
         try {
             Canton guardado = cantonService.guardar(canton);
             return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

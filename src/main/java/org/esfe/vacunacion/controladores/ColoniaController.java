@@ -4,6 +4,8 @@ import org.esfe.vacunacion.modelos.Colonia;
 import org.esfe.vacunacion.servicios.interfaces.ICantonService;
 import org.esfe.vacunacion.servicios.interfaces.IColoniaService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,8 +27,15 @@ public class ColoniaController {
     private ICantonService cantonService;
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("colonias", coloniaService.obtenerTodos());
+    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
+
+        Page<Colonia> coloniaPage = coloniaService.obtenerPaginados(PageRequest.of(page, 4));
+
+        model.addAttribute("colonias", coloniaPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", coloniaPage.getTotalPages());
+        model.addAttribute("totalItems", coloniaPage.getTotalElements());
+
         return "geografico/colonias/lista";
     }
 
@@ -63,20 +72,23 @@ public class ColoniaController {
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute Colonia colonia, RedirectAttributes redirectAttributes) {
+    public String guardar(@ModelAttribute Colonia colonia, Model model, RedirectAttributes redirectAttributes) {
         try {
             coloniaService.guardar(colonia);
             redirectAttributes.addFlashAttribute("mensajeExito", "Colonia guardada exitosamente");
             return "redirect:/geografico/colonias";
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-            if (colonia.getIdColonia() != null) {
-                return "redirect:/geografico/colonias/editar/" + colonia.getIdColonia();
-            }
-            return "redirect:/geografico/colonias/crear";
+            model.addAttribute("mensajeError", e.getMessage());
+            model.addAttribute("colonia", colonia);
+            model.addAttribute("cantones", cantonService.obtenerTodos());
+            model.addAttribute("titulo", colonia.getIdColonia() != null ? "Editar Colonia" : "Nueva Colonia");
+            return "geografico/colonias/formulario";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error interno al procesar la colonia.");
-            return "redirect:/geografico/colonias";
+            model.addAttribute("mensajeError", "Error interno al procesar la colonia.");
+            model.addAttribute("colonia", colonia);
+            model.addAttribute("cantones", cantonService.obtenerTodos());
+            model.addAttribute("titulo", colonia.getIdColonia() != null ? "Editar Colonia" : "Nueva Colonia");
+            return "geografico/colonias/formulario";
         }
     }
 
@@ -93,7 +105,7 @@ public class ColoniaController {
         return "redirect:/geografico/colonias";
     }
 
-    // --- MÉTODOS API REST ---
+
     @GetMapping("/api")
     @ResponseBody
     public ResponseEntity<List<Colonia>> obtenerTodosAPI() {
@@ -110,12 +122,12 @@ public class ColoniaController {
 
     @PostMapping("/api")
     @ResponseBody
-    public ResponseEntity<Colonia> crearAPI(@RequestBody Colonia colonia) {
+    public ResponseEntity<?> crearAPI(@RequestBody Colonia colonia) {
         try {
             Colonia guardado = coloniaService.guardar(colonia);
             return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
@@ -130,4 +142,3 @@ public class ColoniaController {
         }
     }
 }
-

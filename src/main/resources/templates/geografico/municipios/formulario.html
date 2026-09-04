@@ -9,6 +9,13 @@
 
 <div layout:fragment="content">
     <div class="container mt-4" style="max-width: 600px;">
+
+
+        <div th:if="${mensajeError}" class="alert alert-danger alert-dismissible fade show" role="alert">
+            <span th:text="${mensajeError}"></span>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0" th:text="${titulo}">Formulario Municipio</h4>
@@ -18,13 +25,13 @@
                     <input type="hidden" th:field="*{idMunicipio}">
 
                     <div class="mb-3">
-                        <label for="nombre" class="form-label">Nombre del Municipio</label>
-                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" required placeholder="Ej. Soyapango">
+                        <label for="nombre" class="form-label fw-bold">Nombre del Municipio</label>
+                        <input type="text" class="form-control" id="nombre" th:field="*{nombre}" placeholder="Ej. Soyapango">
                     </div>
 
                     <div class="mb-3">
-                        <label for="departamento" class="form-label">Departamento</label>
-                        <select class="form-select" id="departamento" th:field="*{departamento}" required>
+                        <label for="departamento" class="form-label fw-bold">Departamento</label>
+                        <select class="form-select" id="departamento" th:field="*{departamento.idDepartamento}">
                             <option value="">-- Seleccionar Departamento --</option>
                             <option th:each="d : ${departamentos}"
                                     th:value="${d.idDepartamento}"

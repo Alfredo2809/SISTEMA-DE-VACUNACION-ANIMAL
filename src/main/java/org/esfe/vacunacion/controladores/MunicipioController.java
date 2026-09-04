@@ -4,6 +4,8 @@ import org.esfe.vacunacion.modelos.Municipio;
 import org.esfe.vacunacion.servicios.interfaces.IDepartamentoService;
 import org.esfe.vacunacion.servicios.interfaces.IMunicipioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -25,8 +27,15 @@ public class MunicipioController {
     private IDepartamentoService departamentoService;
 
     @GetMapping
-    public String listar(Model model) {
-        model.addAttribute("municipios", municipioService.obtenerTodos());
+    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
+
+        Page<Municipio> municipioPage = municipioService.obtenerPaginados(PageRequest.of(page, 4));
+
+        model.addAttribute("municipios", municipioPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", municipioPage.getTotalPages());
+        model.addAttribute("totalItems", municipioPage.getTotalElements());
+
         return "geografico/municipios/lista";
     }
 
@@ -63,20 +72,23 @@ public class MunicipioController {
     }
 
     @PostMapping
-    public String guardar(@ModelAttribute Municipio municipio, RedirectAttributes redirectAttributes) {
+    public String guardar(@ModelAttribute Municipio municipio, Model model, RedirectAttributes redirectAttributes) {
         try {
             municipioService.guardar(municipio);
             redirectAttributes.addFlashAttribute("mensajeExito", "Municipio guardado exitosamente");
             return "redirect:/geografico/municipios";
         } catch (IllegalArgumentException e) {
-            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
-            if (municipio.getIdMunicipio() != null) {
-                return "redirect:/geografico/municipios/editar/" + municipio.getIdMunicipio();
-            }
-            return "redirect:/geografico/municipios/crear";
+            model.addAttribute("mensajeError", e.getMessage());
+            model.addAttribute("municipio", municipio);
+            model.addAttribute("departamentos", departamentoService.obtenerTodos());
+            model.addAttribute("titulo", municipio.getIdMunicipio() != null ? "Editar Municipio" : "Nuevo Municipio");
+            return "geografico/municipios/formulario";
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error interno al procesar el municipio.");
-            return "redirect:/geografico/municipios";
+            model.addAttribute("mensajeError", "Error interno al procesar el municipio.");
+            model.addAttribute("municipio", municipio);
+            model.addAttribute("departamentos", departamentoService.obtenerTodos());
+            model.addAttribute("titulo", municipio.getIdMunicipio() != null ? "Editar Municipio" : "Nuevo Municipio");
+            return "geografico/municipios/formulario";
         }
     }
 
@@ -93,7 +105,7 @@ public class MunicipioController {
         return "redirect:/geografico/municipios";
     }
 
-    // --- MÉTODOS API REST ---
+
     @GetMapping("/api")
     @ResponseBody
     public ResponseEntity<List<Municipio>> obtenerTodosAPI() {
@@ -110,12 +122,12 @@ public class MunicipioController {
 
     @PostMapping("/api")
     @ResponseBody
-    public ResponseEntity<Municipio> crearAPI(@RequestBody Municipio municipio) {
+    public ResponseEntity<?> crearAPI(@RequestBody Municipio municipio) {
         try {
             Municipio guardado = municipioService.guardar(municipio);
             return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
