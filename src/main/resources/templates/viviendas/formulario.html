@@ -39,8 +39,9 @@
                                    id="direccion"
                                    class="form-control"
                                    th:field="*{direccion}"
-                                   placeholder="Ingrese la dirección completa"
-                                   required />
+                                   th:errorclass="is-invalid"
+                                   placeholder="Ingrese la dirección completa" />
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('direccion')}" th:errors="*{direccion}"></div>
                         </div>
 
                         <div class="mb-3">
@@ -49,18 +50,21 @@
                                    id="referenciaUbicacion"
                                    class="form-control"
                                    th:field="*{referenciaUbicacion}"
+                                   th:errorclass="is-invalid"
                                    placeholder="Ingrese una referencia (opcional)" />
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('referenciaUbicacion')}" th:errors="*{referenciaUbicacion}"></div>
                         </div>
 
                         <div class="mb-3">
                             <label for="colonia" class="form-label">Colonia</label>
-                            <select id="colonia" class="form-select" th:field="*{colonia.idColonia}" required>
+                            <select id="colonia" class="form-select" th:field="*{colonia.idColonia}" th:errorclass="is-invalid">
                                 <option value="">-- Seleccione una colonia --</option>
                                 <option th:each="colonia : ${colonias}"
                                         th:value="${colonia.idColonia}"
                                         th:text="${colonia.nombre}">
                                 </option>
                             </select>
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('colonia')}" th:errors="*{colonia}"></div>
                         </div>
 
                         <div class="d-flex justify-content-between pt-2">

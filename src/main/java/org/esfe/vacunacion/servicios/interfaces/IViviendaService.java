@@ -18,4 +18,6 @@ public interface IViviendaService {
     void eliminar(Long id);
 
     List<Vivienda> listarPorColonia(Long idColonia);
+
+    boolean existsByDireccion(String direccion);
 }
