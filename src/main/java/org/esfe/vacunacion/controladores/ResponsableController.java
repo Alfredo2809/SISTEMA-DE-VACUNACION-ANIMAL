@@ -1,10 +1,12 @@
 package org.esfe.vacunacion.controladores;
 
+import jakarta.validation.Valid;
 import org.esfe.vacunacion.modelos.Responsable;
 import org.esfe.vacunacion.servicios.interfaces.IResponsableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,12 +29,29 @@ public class ResponsableController {
 
     @GetMapping("/nuevo")
     public String mostrarFormulario(Model model) {
+        model.addAttribute("titulo", "Nuevo Responsable");
         model.addAttribute("responsable", new Responsable());
         return "responsables/formulario";
     }
 
     @PostMapping("/guardar")
-    public String guardar(@ModelAttribute("responsable") Responsable responsable, RedirectAttributes redirectAttributes) {
+    public String guardar(@Valid @ModelAttribute("responsable") Responsable responsable,
+                          BindingResult result,
+                          Model model,
+                          RedirectAttributes redirectAttributes) {
+
+        // 1. Validar duplicados por Documento de Identidad (Solo al crear un registro nuevo)
+        if (responsable.getIdResponsable() == null &&
+                responsableService.existsByDocumentoIdentidad(responsable.getDocumentoIdentidad())) {
+            result.rejectValue("documentoIdentidad", "error.responsable", "Ya existe un responsable con este documento de identidad.");
+        }
+
+        // 2. Si existen errores de validación de campos o duplicados, recargar el formulario
+        if (result.hasErrors()) {
+            model.addAttribute("titulo", responsable.getIdResponsable() == null ? "Nuevo Responsable" : "Editar Responsable");
+            return "responsables/formulario";
+        }
+
         responsableService.guardar(responsable);
         redirectAttributes.addFlashAttribute("mensajeExito", "Responsable guardado correctamente.");
         return "redirect:/responsables";
@@ -45,6 +64,7 @@ public class ResponsableController {
             redirectAttributes.addFlashAttribute("mensajeError", "Responsable no encontrado.");
             return "redirect:/responsables";
         }
+        model.addAttribute("titulo", "Editar Responsable");
         model.addAttribute("responsable", responsable);
         return "responsables/formulario";
     }
