@@ -1,6 +1,14 @@
 package org.esfe.vacunacion.modelos;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "cobertura_territorial")
@@ -11,10 +19,12 @@ public class CoberturaTerritorial {
     @Column(name = "id_cobertura")
     private Long idCobertura;
 
+    @NotNull(message = "Debe seleccionar una campaña de vacunación.")
     @ManyToOne
     @JoinColumn(name = "id_campana", nullable = false)
     private CampanaVacunacion campana;
 
+    @NotNull(message = "Debe seleccionar una colonia.")
     @ManyToOne
     @JoinColumn(name = "id_colonia", nullable = false)
     private Colonia colonia;

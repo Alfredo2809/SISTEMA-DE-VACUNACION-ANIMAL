@@ -1,0 +1,144 @@
+package org.esfe.vacunacion.controladores;
+
+import org.esfe.vacunacion.modelos.Canton;
+import org.esfe.vacunacion.servicios.interfaces.ICantonService;
+import org.esfe.vacunacion.servicios.interfaces.IMunicipioService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
+import java.util.Optional;
+
+@Controller
+@RequestMapping("/geografico/cantones")
+public class CantonController {
+
+    @Autowired
+    private ICantonService cantonService;
+
+    @Autowired
+    private IMunicipioService municipioService;
+
+    @GetMapping
+    public String listar(@RequestParam(defaultValue = "0") int page, Model model) {
+
+        Page<Canton> cantonPage = cantonService.obtenerPaginados(PageRequest.of(page, 4));
+
+        model.addAttribute("cantones", cantonPage.getContent());
+        model.addAttribute("currentPage", page);
+        model.addAttribute("totalPages", cantonPage.getTotalPages());
+        model.addAttribute("totalItems", cantonPage.getTotalElements());
+
+        return "geografico/cantones/lista";
+    }
+
+    @GetMapping("/crear")
+    public String formularioCrear(Model model) {
+        model.addAttribute("canton", new Canton());
+        model.addAttribute("municipios", municipioService.obtenerTodos());
+        model.addAttribute("titulo", "Nuevo Cantón");
+        return "geografico/cantones/formulario";
+    }
+
+    @GetMapping("/editar/{id}")
+    public String formularioEditar(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Canton> canton = cantonService.obtenerPorId(id);
+        if (canton.isPresent()) {
+            model.addAttribute("canton", canton.get());
+            model.addAttribute("municipios", municipioService.obtenerTodos());
+            model.addAttribute("titulo", "Editar Cantón");
+            return "geografico/cantones/formulario";
+        }
+        redirectAttributes.addFlashAttribute("mensajeError", "El cantón especificado no existe.");
+        return "redirect:/geografico/cantones";
+    }
+
+    @GetMapping("/detalles/{id}")
+    public String detalles(@PathVariable Long id, Model model, RedirectAttributes redirectAttributes) {
+        Optional<Canton> canton = cantonService.obtenerPorId(id);
+        if (canton.isPresent()) {
+            model.addAttribute("canton", canton.get());
+            return "geografico/cantones/detalles";
+        }
+        redirectAttributes.addFlashAttribute("mensajeError", "El cantón especificado no existe.");
+        return "redirect:/geografico/cantones";
+    }
+
+    @PostMapping
+    public String guardar(@ModelAttribute Canton canton, Model model, RedirectAttributes redirectAttributes) {
+        try {
+            cantonService.guardar(canton);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Cantón guardado exitosamente");
+            return "redirect:/geografico/cantones";
+        } catch (IllegalArgumentException e) {
+            model.addAttribute("mensajeError", e.getMessage());
+            model.addAttribute("canton", canton);
+            model.addAttribute("municipios", municipioService.obtenerTodos());
+            model.addAttribute("titulo", canton.getIdCanton() != null ? "Editar Cantón" : "Nuevo Cantón");
+            return "geografico/cantones/formulario";
+        } catch (Exception e) {
+            model.addAttribute("mensajeError", "Error interno al procesar el cantón.");
+            model.addAttribute("canton", canton);
+            model.addAttribute("municipios", municipioService.obtenerTodos());
+            model.addAttribute("titulo", canton.getIdCanton() != null ? "Editar Cantón" : "Nuevo Cantón");
+            return "geografico/cantones/formulario";
+        }
+    }
+
+    @GetMapping("/eliminar/{id}")
+    public String eliminar(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+        try {
+            cantonService.eliminar(id);
+            redirectAttributes.addFlashAttribute("mensajeExito", "Cantón eliminado correctamente");
+        } catch (IllegalArgumentException e) {
+            redirectAttributes.addFlashAttribute("mensajeError", e.getMessage());
+        } catch (Exception e) {
+            redirectAttributes.addFlashAttribute("mensajeError", "No se puede eliminar el cantón debido a registros relacionados.");
+        }
+        return "redirect:/geografico/cantones";
+    }
+
+
+    @GetMapping("/api")
+    @ResponseBody
+    public ResponseEntity<List<Canton>> obtenerTodosAPI() {
+        return ResponseEntity.ok(cantonService.obtenerTodos());
+    }
+
+    @GetMapping("/api/{id}")
+    @ResponseBody
+    public ResponseEntity<Canton> obtenerPorIdAPI(@PathVariable Long id) {
+        return cantonService.obtenerPorId(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/api")
+    @ResponseBody
+    public ResponseEntity<?> crearAPI(@RequestBody Canton canton) {
+        try {
+            Canton guardado = cantonService.guardar(canton);
+            return ResponseEntity.status(HttpStatus.CREATED).body(guardado);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/api/{id}")
+    @ResponseBody
+    public ResponseEntity<Void> eliminarAPI(@PathVariable Long id) {
+        try {
+            cantonService.eliminar(id);
+            return ResponseEntity.noContent().build();
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
+    }
+}

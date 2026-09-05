@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{layouts/_mainLayout}">
+<head>
+    <title th:text="${campana.idCampana != null} ? 'Editar Campaña' : 'Nueva Campaña'">Formulario Campaña</title>
+</head>
+<body>
+
+<div layout:fragment="content">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white py-3">
+                    <h4 class="card-title mb-0 fs-5 fw-bold">
+                        <i class="fas fa-bullhorn me-2"></i>
+                        <span th:text="${campana.idCampana != null} ? 'Editar Campaña' : 'Nueva Campaña'">Formulario Campaña</span>
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <form th:action="@{/campanas/guardar}" th:object="${campana}" method="post">
+                        <input type="hidden" th:field="*{idCampana}" />
+
+                        <!-- Nombre de la Campaña -->
+                        <div class="mb-3">
+                            <label for="nombre" class="form-label fw-semibold">Nombre de la Campaña:</label>
+                            <input type="text" id="nombre" th:field="*{nombre}" class="form-control" placeholder="Ej. Campaña Antirrábica 2026" required />
+                        </div>
+
+                        <!-- Fechas -->
+                        <div class="row mb-3">
+                            <div class="col-md-6 mb-3 mb-md-0">
+                                <label for="fechaInicio" class="form-label fw-semibold">Fecha de Inicio:</label>
+                                <input type="date" id="fechaInicio" th:field="*{fechaInicio}" class="form-control" required />
+                            </div>
+                            <div class="col-md-6">
+                                <label for="fechaFin" class="form-label fw-semibold">Fecha de Fin:</label>
+                                <input type="date" id="fechaFin" th:field="*{fechaFin}" class="form-control" required />
+                            </div>
+                        </div>
+
+                        <!-- Estado -->
+                        <div class="mb-4">
+                            <label for="estado" class="form-label fw-semibold">Estado:</label>
+                            <select id="estado" th:field="*{estado}" class="form-select" required>
+                                <option value="">-- Seleccionar Estado --</option>
+                                <option value="Planificada">Planificada</option>
+                                <option value="En Curso">En Curso</option>
+                                <option value="Finalizada">Finalizada</option>
+                            </select>
+                        </div>
+
+                        <!-- Acciones -->
+                        <div class="d-flex justify-content-between pt-3 border-top">
+                            <a th:href="@{/campanas}" class="btn btn-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-save me-1"></i>Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>

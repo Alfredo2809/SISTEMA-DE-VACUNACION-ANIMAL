@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 /**
  * Implementacion del servicio de Vivienda.
  */
@@ -39,5 +40,10 @@ public class ViviendaServiceImpl implements IViviendaService {
     @Override
     public List<Vivienda> listarPorColonia(Long idColonia) {
         return viviendaRepository.listarPorColonia(idColonia);
+    }
+
+    @Override
+    public boolean existsByDireccion(String direccion) {
+        return viviendaRepository.existsByDireccion(direccion);
     }
 }

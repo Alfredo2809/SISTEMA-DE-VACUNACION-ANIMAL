@@ -1,8 +1,13 @@
 package org.esfe.vacunacion.repositorios;
+
 import org.esfe.vacunacion.modelos.Municipio;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
 public interface MunicipioRepository extends JpaRepository<Municipio, Long> {
+
+    boolean existsByNombreIgnoreCaseAndDepartamentoIdDepartamento(String nombre, Long idDepartamento);
+
+    boolean existsByNombreIgnoreCaseAndDepartamentoIdDepartamentoAndIdMunicipioNot(String nombre, Long idDepartamento, Long idMunicipio);
 }

@@ -6,6 +6,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "responsable")
@@ -16,12 +18,16 @@ public class Responsable {
     @Column(name = "id_responsable")
     private Long idResponsable;
 
+    @NotBlank(message = "El nombre completo es obligatorio.")
     @Column(name = "nombre_completo", nullable = false, length = 150)
     private String nombreCompleto;
 
+    @NotBlank(message = "El teléfono es obligatorio.")
+    @Pattern(regexp = "^\\d{4}-?\\d{4}$", message = "El teléfono debe tener un formato válido (ej. 7123-4567).")
     @Column(name = "telefono", nullable = false, length = 20)
     private String telefono;
 
+    @NotBlank(message = "El documento de identidad es obligatorio.")
     @Column(name = "documento_identidad", nullable = false, length = 20)
     private String documentoIdentidad;
 
@@ -48,8 +54,8 @@ public class Responsable {
         return telefono;
     }
 
-    public void actualizarTelefono(String nuevoTelefono) {
-        this.telefono = nuevoTelefono;
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
     }
 
     public String getDocumentoIdentidad() {

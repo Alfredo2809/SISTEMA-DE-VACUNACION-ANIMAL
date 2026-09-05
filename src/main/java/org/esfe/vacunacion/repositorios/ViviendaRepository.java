@@ -10,4 +10,6 @@ public interface ViviendaRepository extends JpaRepository<Vivienda, Long> {
 
     @Query("SELECT v FROM Vivienda v WHERE v.colonia.idColonia = :idColonia")
     List<Vivienda> listarPorColonia(@Param("idColonia") Long idColonia);
+
+    boolean existsByDireccion(String direccion);
 }
