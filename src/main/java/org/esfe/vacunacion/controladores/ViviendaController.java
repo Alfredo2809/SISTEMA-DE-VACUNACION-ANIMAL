@@ -45,14 +45,21 @@ public class ViviendaController {
                           Model model,
                           RedirectAttributes redirectAttributes) {
 
-        // 1. Detectar dirección duplicada (solo cuando es una vivienda nueva)
+        // 1. Validar si la colonia viene vacía o sin un ID válido
+        if (vivienda.getColonia() == null || vivienda.getColonia().getIdColonia() == null) {
+            vivienda.setColonia(null); // Evita la excepción de objeto transitorio en Hibernate
+            result.rejectValue("colonia.idColonia", "error.vivienda", "Debe seleccionar una colonia obligatoriamente.");
+        }
+
+        // 2. Detectar dirección duplicada (solo cuando es una vivienda nueva)
         if (vivienda.getIdVivienda() == null &&
                 vivienda.getDireccion() != null &&
+                !vivienda.getDireccion().trim().isEmpty() &&
                 viviendaService.existsByDireccion(vivienda.getDireccion().trim())) {
             result.rejectValue("direccion", "error.vivienda", "Esta dirección ya se encuentra registrada en el sistema.");
         }
 
-        // 2. Si existen errores de validación, recargar el formulario con el listado de colonias
+        // 3. Si existen errores de validación, recargar el formulario con el listado de colonias
         if (result.hasErrors()) {
             model.addAttribute("titulo", vivienda.getIdVivienda() == null ? "Nueva Vivienda" : "Editar Vivienda");
             model.addAttribute("colonias", coloniaService.obtenerTodos());

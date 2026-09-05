@@ -43,7 +43,7 @@
                 <tr>
                     <th>Campaña</th>
                     <th>Colonia</th>
-                    <th style="width: 15%;" class="text-center">Acciones</th>
+                    <th style="width: 20%;" class="text-center">Acciones</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -51,6 +51,14 @@
                     <td th:text="${cobertura.campana != null ? cobertura.campana.nombre : 'Sin campaña'}">Nombre Campaña</td>
                     <td th:text="${cobertura.colonia != null ? cobertura.colonia.nombre : 'Sin colonia'}">Nombre Colonia</td>
                     <td class="text-center">
+                        <!-- Botón de Editar -->
+                        <a th:href="@{/cobertura-territorial/editar/{id}(id=${cobertura.idCobertura})}"
+                           class="btn btn-warning btn-sm me-1"
+                           title="Editar">
+                            <i class="fas fa-edit"></i> Editar
+                        </a>
+
+                        <!-- Botón de Eliminar -->
                         <a th:href="@{/cobertura-territorial/eliminar/{id}(id=${cobertura.idCobertura})}"
                            class="btn btn-danger btn-sm"
                            onclick="return confirm('¿Está seguro de eliminar esta cobertura territorial?');"

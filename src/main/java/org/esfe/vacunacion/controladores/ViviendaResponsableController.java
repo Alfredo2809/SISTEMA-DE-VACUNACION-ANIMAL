@@ -67,6 +67,6 @@ public class ViviendaResponsableController {
 
         viviendaResponsableService.guardar(nuevaAsociacion);
         redirectAttributes.addFlashAttribute("mensajeExito", "Responsable asociado a la vivienda correctamente.");
-        return "redirect:/vivienda-responsable/asociar";
+        return "redirect:/vivienda-responsable";
     }
 }

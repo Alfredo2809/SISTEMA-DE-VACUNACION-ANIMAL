@@ -64,6 +64,8 @@
                                         th:text="${colonia.nombre}">
                                 </option>
                             </select>
+                            <!-- Captura tanto el error del objeto 'colonia' como del 'colonia.idColonia' -->
+                            <div class="invalid-feedback" th:if="${#fields.hasErrors('colonia.idColonia')}" th:errors="*{colonia.idColonia}"></div>
                             <div class="invalid-feedback" th:if="${#fields.hasErrors('colonia')}" th:errors="*{colonia}"></div>
                         </div>
 
